@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 
 const JobApplying = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -12,6 +12,10 @@ const JobApplying = () => {
     availability: "Immediate",
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [activeShareDropdown, setActiveShareDropdown] = useState(null);
+  const fileInputRef = useRef(null);
 
   const jobs = [
     {
@@ -136,10 +140,84 @@ const JobApplying = () => {
     },
   ];
 
+  const socialMediaPlatforms = [
+    {
+      name: "Facebook",
+      icon: "📘",
+      color: "hover:bg-blue-100 border-blue-200",
+      iconColor: "text-blue-600",
+      shareUrl: (job) =>
+        `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+          window.location.href
+        )}&quote=Check out this job opening: ${job.title} at ${
+          job.location
+        } - ${job.salary}`,
+    },
+    {
+      name: "LinkedIn",
+      icon: "💼",
+      color: "hover:bg-blue-50 border-blue-100",
+      iconColor: "text-blue-500",
+      shareUrl: (job) =>
+        `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
+          window.location.href
+        )}&summary=${encodeURIComponent(
+          `${job.title} - ${job.department} - ${job.location} - ${job.salary}`
+        )}`,
+    },
+    {
+      name: "Twitter",
+      icon: "🐦",
+      color: "hover:bg-sky-50 border-sky-100",
+      iconColor: "text-sky-500",
+      shareUrl: (job) =>
+        `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+          `Check out this job: ${job.title} at ${job.location} - ${job.salary}`
+        )}&url=${encodeURIComponent(window.location.href)}`,
+    },
+    {
+      name: "WhatsApp",
+      icon: "💚",
+      color: "hover:bg-green-50 border-green-100",
+      iconColor: "text-green-600",
+      shareUrl: (job) =>
+        `https://wa.me/?text=${encodeURIComponent(
+          `Check out this job opening: ${job.title} - ${job.location}. ${job.salary}. Apply now: ${window.location.href}`
+        )}`,
+    },
+    {
+      name: "Telegram",
+      icon: "📱",
+      color: "hover:bg-blue-50 border-blue-100",
+      iconColor: "text-blue-400",
+      shareUrl: (job) =>
+        `https://t.me/share/url?url=${encodeURIComponent(
+          window.location.href
+        )}&text=${encodeURIComponent(
+          `Job Opportunity: ${job.title} - ${job.location}`
+        )}`,
+    },
+    {
+      name: "Email",
+      icon: "📧",
+      color: "hover:bg-gray-50 border-gray-100",
+      iconColor: "text-gray-600",
+      shareUrl: (job) =>
+        `mailto:?subject=${encodeURIComponent(
+          `Job Opportunity: ${job.title}`
+        )}&body=${encodeURIComponent(
+          `Check out this job opening:\n\nPosition: ${job.title}\nLocation: ${job.location}\nType: ${job.type}\nSalary: ${job.salary}\nDepartment: ${job.department}\n\nApply here: ${window.location.href}`
+        )}`,
+    },
+  ];
+
   const openPopup = (job) => {
     setSelectedJob(job);
     setIsPopupOpen(true);
     setIsSubmitted(false);
+    setIsSubmitting(false);
+    setUploadProgress(0);
+    setActiveShareDropdown(null);
     setFormData({
       name: "",
       email: "",
@@ -153,6 +231,38 @@ const JobApplying = () => {
   const closePopup = () => {
     setIsPopupOpen(false);
     setSelectedJob(null);
+    setActiveShareDropdown(null);
+  };
+
+  const toggleShareDropdown = (jobId) => {
+    setActiveShareDropdown(activeShareDropdown === jobId ? null : jobId);
+  };
+
+  const handleSocialShare = (platform, job, e) => {
+    e.stopPropagation();
+    const shareUrl = platform.shareUrl(job);
+    window.open(shareUrl, "_blank", "width=600,height=400");
+    setActiveShareDropdown(null);
+  };
+
+  const copyJobLink = (job, e) => {
+    e.stopPropagation();
+    const jobUrl = `${window.location.href}#job-${job.id}`;
+    navigator.clipboard.writeText(jobUrl).then(() => {
+      // Show temporary success message
+      const button = e.target;
+      const originalText = button.innerHTML;
+      button.innerHTML = `
+        <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+        </svg>
+        <span>Copied!</span>
+      `;
+      setTimeout(() => {
+        button.innerHTML = originalText;
+      }, 2000);
+    });
+    setActiveShareDropdown(null);
   };
 
   const handleInputChange = (e) => {
@@ -163,11 +273,52 @@ const JobApplying = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleFileUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setUploadProgress(0);
+      const fileSize = file.size;
+      const maxSize = 5 * 1024 * 1024;
+
+      if (fileSize > maxSize) {
+        alert("File size must be less than 5MB");
+        return;
+      }
+
+      const progressInterval = setInterval(() => {
+        setUploadProgress((prev) => {
+          if (prev >= 100) {
+            clearInterval(progressInterval);
+            setFormData((prev) => ({ ...prev, resume: file }));
+            return 100;
+          }
+          return prev + 10;
+        });
+      }, 100);
+    }
+  };
+
+  const handleRemoveFile = () => {
+    setFormData((prev) => ({ ...prev, resume: null }));
+    setUploadProgress(0);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Simulate form submission
+    setIsSubmitting(true);
+
+    // Simulate form submission with progress
+    for (let i = 0; i <= 100; i += 20) {
+      setUploadProgress(i);
+      await new Promise((resolve) => setTimeout(resolve, 200));
+    }
+
     console.log("Application submitted:", { job: selectedJob, ...formData });
     setIsSubmitted(true);
+    setIsSubmitting(false);
 
     // Reset form after 3 seconds
     setTimeout(() => {
@@ -188,53 +339,75 @@ const JobApplying = () => {
     }
   };
 
+  const formatFileSize = (bytes) => {
+    if (bytes === 0) return "0 Bytes";
+    const k = 1024;
+    const sizes = ["Bytes", "KB", "MB", "GB"];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
+  };
+
+  // Close dropdown when clicking outside
+  React.useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (!event.target.closest(".share-dropdown")) {
+        setActiveShareDropdown(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 py-8 px-4 sm:px-6 lg:px-8">
-      {/* Header */}
-      <div className="text-center mb-8">
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
-          Labor & Physical Work Jobs
-        </h1>
-        <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-          Immediate openings for hardworking individuals. No experience required
-          for many positions!
-        </p>
-        <div className="flex flex-wrap justify-center gap-4 mt-4">
-          <span className="bg-blue-500 text-white px-3 py-1 rounded-full text-sm">
-            Same Day Pay Available
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100 py-8 px-4 sm:px-6 lg:px-8">
+      {/* Enhanced Header */}
+      <div className="text-center mb-12">
+        <div className="animate-fade-in">
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            Labor & Physical Work Jobs
+          </h1>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+            Immediate openings for hardworking individuals. Start your new
+            career today with competitive pay and benefits.
+          </p>
+        </div>
+        <div className="flex flex-wrap justify-center gap-4 mt-6">
+          <span className="bg-blue-500 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+            💰 Same Day Pay Available
           </span>
-          <span className="bg-green-500 text-white px-3 py-1 rounded-full text-sm">
-            Weekly Pay
+          <span className="bg-green-500 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+            📅 Weekly Pay
           </span>
-          <span className="bg-purple-500 text-white px-3 py-1 rounded-full text-sm">
-            Overtime Available
+          <span className="bg-purple-500 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+            ⏰ Overtime Available
           </span>
         </div>
       </div>
 
-      {/* Job Listings */}
-      <div className="max-w-7xl mx-auto grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {/* Enhanced Job Listings */}
+      <div className="max-w-7xl mx-auto grid gap-8 md:grid-cols-2 lg:grid-cols-3">
         {jobs.map((job) => (
           <div
             key={job.id}
-            className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-blue-200 overflow-hidden"
+            className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 border border-blue-100 overflow-hidden transform hover:-translate-y-2 relative"
           >
-            {/* Job Header */}
-            <div className="p-6 border-b border-blue-100">
+            {/* Job Header with Gradient */}
+            <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-6 text-white">
               <div className="flex justify-between items-start mb-3">
-                <div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-2">
+                <div className="flex-1">
+                  <h3 className="text-xl font-bold mb-2 group-hover:text-blue-100 transition-colors">
                     {job.title}
                   </h3>
                   <div className="flex flex-wrap gap-2 mb-3">
-                    <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
+                    <span className="bg-white bg-opacity-20 text-gray-800 backdrop-blur-sm px-3 py-1 rounded-full text-sm">
                       {job.department}
                     </span>
-                    <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">
+                    <span className="bg-white text-gray-800 bg-opacity-20 backdrop-blur-sm px-3 py-1 rounded-full text-sm">
                       {job.type}
                     </span>
                     <span
-                      className={`px-2 py-1 rounded-full text-xs font-semibold ${getUrgencyColor(
+                      className={`px-3 py-1 rounded-full text-xs font-semibold backdrop-blur-sm ${getUrgencyColor(
                         job.urgency
                       )}`}
                     >
@@ -245,87 +418,79 @@ const JobApplying = () => {
               </div>
 
               {/* Job Details */}
-              <div className="space-y-2 text-sm text-gray-600">
+              <div className="space-y-2 text-sm text-blue-100">
                 <div className="flex items-center">
                   <svg
-                    className="w-4 h-4 mr-2 text-blue-500"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
+                    className="w-4 h-4 mr-2"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
                   >
                     <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                      fillRule="evenodd"
+                      d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                      clipRule="evenodd"
                     />
                   </svg>
                   {job.location}
                 </div>
                 <div className="flex items-center">
                   <svg
-                    className="w-4 h-4 mr-2 text-blue-500"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
+                    className="w-4 h-4 mr-2"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
                   >
+                    <path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z" />
                     <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z"
+                      clipRule="evenodd"
                     />
                   </svg>
                   {job.salary}
                 </div>
                 <div className="flex items-center">
                   <svg
-                    className="w-4 h-4 mr-2 text-blue-500"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
+                    className="w-4 h-4 mr-2"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
                   >
                     <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
+                      clipRule="evenodd"
                     />
                   </svg>
                   {job.shift}
-                </div>
-                <div className="flex items-center">
-                  <svg
-                    className="w-4 h-4 mr-2 text-blue-500"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0V6a2 2 0 012 2v6a2 2 0 01-2 2H8a2 2 0 01-2-2V8a2 2 0 012-2V6"
-                    />
-                  </svg>
-                  Exp: {job.experience}
                 </div>
               </div>
             </div>
 
             {/* Job Description */}
             <div className="p-6">
-              <p className="text-gray-600 mb-4 text-sm">{job.description}</p>
+              <p className="text-gray-600 mb-4 text-sm leading-relaxed">
+                {job.description}
+              </p>
 
               <div className="mb-4">
-                <h4 className="font-semibold text-gray-900 mb-2">
+                <h4 className="font-semibold text-gray-900 mb-3 flex items-center">
+                  <svg
+                    className="w-4 h-4 mr-2 text-blue-500"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
                   Requirements:
                 </h4>
                 <div className="flex flex-wrap gap-2">
                   {job.requirements.map((req, index) => (
                     <span
                       key={index}
-                      className="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs"
+                      className="bg-gradient-to-r from-gray-50 to-gray-100 text-gray-700 px-3 py-2 rounded-lg text-sm font-medium border border-gray-200"
                     >
                       {req}
                     </span>
@@ -333,96 +498,215 @@ const JobApplying = () => {
                 </div>
               </div>
 
-              <div className="flex justify-between items-center">
-                <span className="text-xs text-gray-500">{job.posted}</span>
-                <button
-                  onClick={() => openPopup(job)}
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors duration-200"
-                >
-                  Apply Now
-                </button>
+              {/* Action Buttons */}
+              <div className="flex justify-between items-center pt-4 border-t border-gray-100">
+                <span className="text-xs text-gray-500 font-medium">
+                  {job.posted}
+                </span>
+
+                <div className="flex items-center gap-3">
+                  {/* Share Dropdown */}
+                  <div className="share-dropdown relative">
+                    <button
+                      onClick={() => toggleShareDropdown(job.id)}
+                      className="flex items-center gap-2 text-gray-600 hover:text-blue-600 transition-all duration-200 p-2 rounded-lg hover:bg-blue-50"
+                    >
+                      <svg
+                        className="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"
+                        />
+                      </svg>
+                      <span className="text-sm font-medium">Share</span>
+                    </button>
+
+                    {/* Dropdown Menu */}
+                    {activeShareDropdown === job.id && (
+                      <div className="absolute bottom-full mb-2 right-0 w-64 bg-white rounded-2xl shadow-2xl border border-gray-200 p-3 animate-scale-in z-10">
+                        <div className="space-y-2">
+                          {/* Copy Link Button */}
+                          <button
+                            onClick={(e) => copyJobLink(job, e)}
+                            className="w-full flex items-center gap-3 p-3 rounded-xl border border-gray-200 hover:bg-blue-50 hover:border-blue-200 transition-all duration-200 group"
+                          >
+                            <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center group-hover:bg-blue-200 transition-colors">
+                              <svg
+                                className="w-4 h-4 text-blue-600"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+                                />
+                              </svg>
+                            </div>
+                            <div className="text-left">
+                              <div className="font-semibold text-gray-900 text-sm">
+                                Copy Job Link
+                              </div>
+                              <div className="text-gray-500 text-xs">
+                                Share via any platform
+                              </div>
+                            </div>
+                          </button>
+
+                          {/* Social Media Platforms */}
+                          <div className="grid grid-cols-2 gap-2">
+                            {socialMediaPlatforms.map((platform) => (
+                              <button
+                                key={platform.name}
+                                onClick={(e) =>
+                                  handleSocialShare(platform, job, e)
+                                }
+                                className={`flex items-center gap-2 p-3 rounded-xl border transition-all duration-200 ${platform.color} group`}
+                              >
+                                <span
+                                  className={`text-lg ${platform.iconColor}`}
+                                >
+                                  {platform.icon}
+                                </span>
+                                <span className="font-medium text-gray-700 text-sm">
+                                  {platform.name}
+                                </span>
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Apply Button */}
+                  <button
+                    onClick={() => openPopup(job)}
+                    className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                  >
+                    Apply Now
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         ))}
       </div>
 
-      {/* Application Popup */}
+      {/* Enhanced Application Popup */}
       {isPopupOpen && selectedJob && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-fade-in">
+          <div className="bg-white rounded-3xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto transform animate-scale-in">
             {isSubmitted ? (
               <div className="p-8 text-center">
-                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6 animate-bounce">
                   <svg
-                    className="w-8 h-8 text-green-500"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
+                    className="w-10 h-10 text-green-500"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
                   >
                     <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M5 13l4 4L19 7"
+                      fillRule="evenodd"
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                      clipRule="evenodd"
                     />
                   </svg>
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                <h3 className="text-3xl font-bold text-gray-900 mb-3">
                   Application Submitted!
                 </h3>
-                <p className="text-gray-600 mb-6">
+                <p className="text-gray-600 mb-6 text-lg">
                   Thank you for applying to the{" "}
-                  <strong>{selectedJob.title}</strong> position. We'll contact
-                  you soon.
+                  <strong className="text-blue-600">{selectedJob.title}</strong>{" "}
+                  position.
+                </p>
+                <p className="text-gray-500 mb-8">
+                  We've received your application and will contact you within
+                  2-3 business days.
                 </p>
                 <button
                   onClick={closePopup}
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors duration-200"
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105"
                 >
-                  Close
+                  Close Window
                 </button>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="p-6">
+              <form onSubmit={handleSubmit} className="p-8">
                 {/* Popup Header */}
-                <div className="flex justify-between items-center mb-6">
+                <div className="flex justify-between items-start mb-8">
                   <div>
-                    <h3 className="text-xl font-bold text-gray-900">
-                      {selectedJob.title}
+                    <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                      Apply for {selectedJob.title}
                     </h3>
-                    <p className="text-gray-600">
+                    <p className="text-gray-600 flex items-center">
+                      <svg
+                        className="w-4 h-4 mr-2 text-blue-500"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
                       {selectedJob.department} • {selectedJob.location}
                     </p>
                   </div>
                   <button
                     type="button"
                     onClick={closePopup}
-                    className="text-gray-400 hover:text-gray-600 text-2xl"
+                    className="text-gray-400 hover:text-gray-600 text-2xl transition-colors duration-200"
                   >
                     ×
                   </button>
                 </div>
 
                 {/* Application Form */}
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Full Name *
-                    </label>
-                    <input
-                      type="text"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleInputChange}
-                      required
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                      placeholder="Enter your full name"
-                    />
+                <div className="space-y-6">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        Full Name *
+                      </label>
+                      <input
+                        type="text"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleInputChange}
+                        required
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                        placeholder="John Doe"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        Phone Number *
+                      </label>
+                      <input
+                        type="tel"
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleInputChange}
+                        required
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                        placeholder="(555) 123-4567"
+                      />
+                    </div>
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
                       Email Address *
                     </label>
                     <input
@@ -431,84 +715,179 @@ const JobApplying = () => {
                       value={formData.email}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                      placeholder="Enter your email"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                      placeholder="john.doe@example.com"
                     />
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Phone Number *
-                    </label>
-                    <input
-                      type="tel"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleInputChange}
-                      required
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                      placeholder="Enter your phone number"
-                    />
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        Experience Level
+                      </label>
+                      <select
+                        name="experience"
+                        value={formData.experience}
+                        onChange={handleInputChange}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white"
+                      >
+                        <option value="">Select experience</option>
+                        <option value="No Experience">No Experience</option>
+                        <option value="0-1 year">0-1 year</option>
+                        <option value="1-3 years">1-3 years</option>
+                        <option value="3+ years">3+ years</option>
+                        <option value="5+ years">5+ years</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        Availability *
+                      </label>
+                      <select
+                        name="availability"
+                        value={formData.availability}
+                        onChange={handleInputChange}
+                        required
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white"
+                      >
+                        <option value="Immediate">Immediate</option>
+                        <option value="1 week">Within 1 week</option>
+                        <option value="2 weeks">Within 2 weeks</option>
+                        <option value="1 month">Within 1 month</option>
+                      </select>
+                    </div>
                   </div>
 
+                  {/* Enhanced File Upload Section */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Relevant Experience
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Resume Upload (Optional)
                     </label>
-                    <select
-                      name="experience"
-                      value={formData.experience}
-                      onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    >
-                      <option value="">Select experience level</option>
-                      <option value="No Experience">No Experience</option>
-                      <option value="0-1 year">0-1 year</option>
-                      <option value="1-3 years">1-3 years</option>
-                      <option value="3+ years">3+ years</option>
-                      <option value="5+ years">5+ years</option>
-                    </select>
-                  </div>
+                    <div className="space-y-3">
+                      {!formData.resume ? (
+                        <div
+                          className="border-2 border-dashed border-gray-300 rounded-2xl p-6 text-center transition-all duration-300 hover:border-blue-400 hover:bg-blue-50 cursor-pointer"
+                          onClick={() => fileInputRef.current?.click()}
+                        >
+                          <svg
+                            className="w-12 h-12 text-gray-400 mx-auto mb-3"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                            />
+                          </svg>
+                          <p className="text-gray-600 font-medium">
+                            Click to upload resume
+                          </p>
+                          <p className="text-gray-400 text-sm mt-1">
+                            PDF, DOC, DOCX up to 5MB
+                          </p>
+                        </div>
+                      ) : (
+                        <div className="bg-green-50 border border-green-200 rounded-2xl p-4 animate-fade-in">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center space-x-3">
+                              <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                                <svg
+                                  className="w-6 h-6 text-green-600"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                                  />
+                                </svg>
+                              </div>
+                              <div>
+                                <p className="font-semibold text-gray-900">
+                                  {formData.resume.name}
+                                </p>
+                                <p className="text-sm text-gray-500">
+                                  {formatFileSize(formData.resume.size)}
+                                </p>
+                              </div>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={handleRemoveFile}
+                              className="text-red-500 hover:text-red-700 transition-colors duration-200"
+                            >
+                              <svg
+                                className="w-5 h-5"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                />
+                              </svg>
+                            </button>
+                          </div>
+                        </div>
+                      )}
 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Availability *
-                    </label>
-                    <select
-                      name="availability"
-                      value={formData.availability}
-                      onChange={handleInputChange}
-                      required
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    >
-                      <option value="Immediate">Immediate</option>
-                      <option value="1 week">Within 1 week</option>
-                      <option value="2 weeks">Within 2 weeks</option>
-                      <option value="1 month">Within 1 month</option>
-                    </select>
-                  </div>
+                      {/* Upload Progress Bar */}
+                      {uploadProgress > 0 && uploadProgress < 100 && (
+                        <div className="animate-fade-in">
+                          <div className="flex justify-between text-sm text-gray-600 mb-2">
+                            <span>Uploading...</span>
+                            <span>{uploadProgress}%</span>
+                          </div>
+                          <div className="w-full bg-gray-200 rounded-full h-2">
+                            <div
+                              className="bg-blue-600 h-2 rounded-full transition-all duration-300 ease-out"
+                              style={{ width: `${uploadProgress}%` }}
+                            ></div>
+                          </div>
+                        </div>
+                      )}
 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Resume (Optional)
-                    </label>
-                    <input
-                      type="file"
-                      name="resume"
-                      onChange={handleInputChange}
-                      accept=".pdf,.doc,.docx"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    />
+                      <input
+                        type="file"
+                        ref={fileInputRef}
+                        name="resume"
+                        onChange={handleFileUpload}
+                        accept=".pdf,.doc,.docx"
+                        className="hidden"
+                      />
+                    </div>
                   </div>
                 </div>
 
-                {/* Submit Button */}
+                {/* Enhanced Submit Button */}
                 <div className="mt-8">
                   <button
                     type="submit"
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg font-semibold transition-colors duration-200"
+                    disabled={isSubmitting}
+                    className={`w-full py-4 px-6 rounded-xl font-semibold text-white transition-all duration-300 transform hover:scale-105 ${
+                      isSubmitting
+                        ? "bg-gray-400 cursor-not-allowed"
+                        : "bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 shadow-lg hover:shadow-xl"
+                    }`}
                   >
-                    Submit Application
+                    {isSubmitting ? (
+                      <div className="flex items-center justify-center space-x-2">
+                        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                        <span>Submitting Application...</span>
+                      </div>
+                    ) : (
+                      "Submit Application"
+                    )}
                   </button>
                 </div>
               </form>
@@ -516,6 +895,36 @@ const JobApplying = () => {
           </div>
         </div>
       )}
+
+      {/* Add some custom animations */}
+      <style jsx>{`
+        @keyframes fade-in {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        @keyframes scale-in {
+          from {
+            opacity: 0;
+            transform: scale(0.9);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+        .animate-fade-in {
+          animation: fade-in 0.5s ease-out;
+        }
+        .animate-scale-in {
+          animation: scale-in 0.3s ease-out;
+        }
+      `}</style>
     </div>
   );
 };

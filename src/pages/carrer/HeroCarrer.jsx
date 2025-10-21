@@ -52,9 +52,12 @@ const HeroCarrer = () => {
         </div>
 
         <div className="flex flex-col sm:flex-row gap-4 mb-12 justify-center items-center">
-          <a
-            href="#job-position"
-            className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center"
+          <button
+            onClick={() => {
+              const section = document.querySelector("#job-position");
+              section?.scrollIntoView({ behavior: "smooth" });
+            }}
+            className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center cursor-pointer"
           >
             <span>View Open Positions</span>
             <svg
@@ -70,7 +73,7 @@ const HeroCarrer = () => {
                 d="M14 5l7 7m0 0l-7 7m7-7H3"
               />
             </svg>
-          </a>
+          </button>
 
           <Link
             to={"/about-us"}

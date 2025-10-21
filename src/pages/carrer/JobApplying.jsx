@@ -1,4 +1,12 @@
 import React, { useState, useRef } from "react";
+import {
+  FaEnvelope,
+  FaFacebook,
+  FaLinkedin,
+  FaTelegram,
+  FaWhatsapp,
+} from "react-icons/fa";
+import { FaX } from "react-icons/fa6";
 
 const JobApplying = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -143,7 +151,7 @@ const JobApplying = () => {
   const socialMediaPlatforms = [
     {
       name: "Facebook",
-      icon: "📘",
+      icon: <FaFacebook className="w-5 h-5" />,
       color: "hover:bg-blue-100 border-blue-200",
       iconColor: "text-blue-600",
       shareUrl: (job) =>
@@ -155,7 +163,7 @@ const JobApplying = () => {
     },
     {
       name: "LinkedIn",
-      icon: "💼",
+      icon: <FaLinkedin className="w-5 h-5" />,
       color: "hover:bg-blue-50 border-blue-100",
       iconColor: "text-blue-500",
       shareUrl: (job) =>
@@ -167,7 +175,7 @@ const JobApplying = () => {
     },
     {
       name: "Twitter",
-      icon: "🐦",
+      icon: <FaX className="w-5 h-5" />,
       color: "hover:bg-sky-50 border-sky-100",
       iconColor: "text-sky-500",
       shareUrl: (job) =>
@@ -177,7 +185,7 @@ const JobApplying = () => {
     },
     {
       name: "WhatsApp",
-      icon: "💚",
+      icon: <FaWhatsapp className="w-5 h-5" />,
       color: "hover:bg-green-50 border-green-100",
       iconColor: "text-green-600",
       shareUrl: (job) =>
@@ -187,7 +195,7 @@ const JobApplying = () => {
     },
     {
       name: "Telegram",
-      icon: "📱",
+      icon: <FaTelegram className="w-5 h-5" />,
       color: "hover:bg-blue-50 border-blue-100",
       iconColor: "text-blue-400",
       shareUrl: (job) =>
@@ -199,7 +207,7 @@ const JobApplying = () => {
     },
     {
       name: "Email",
-      icon: "📧",
+      icon: <FaEnvelope className="w-5 h-5" />,
       color: "hover:bg-gray-50 border-gray-100",
       iconColor: "text-gray-600",
       shareUrl: (job) =>
@@ -249,7 +257,6 @@ const JobApplying = () => {
     e.stopPropagation();
     const jobUrl = `${window.location.href}#job-${job.id}`;
     navigator.clipboard.writeText(jobUrl).then(() => {
-      // Show temporary success message
       const button = e.target;
       const originalText = button.innerHTML;
       button.innerHTML = `
@@ -310,7 +317,6 @@ const JobApplying = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate form submission with progress
     for (let i = 0; i <= 100; i += 20) {
       setUploadProgress(i);
       await new Promise((resolve) => setTimeout(resolve, 200));
@@ -320,7 +326,6 @@ const JobApplying = () => {
     setIsSubmitted(true);
     setIsSubmitting(false);
 
-    // Reset form after 3 seconds
     setTimeout(() => {
       closePopup();
     }, 3000);
@@ -347,7 +352,6 @@ const JobApplying = () => {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
   };
 
-  // Close dropdown when clicking outside
   React.useEffect(() => {
     const handleClickOutside = (event) => {
       if (!event.target.closest(".share-dropdown")) {
@@ -360,8 +364,10 @@ const JobApplying = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100 py-8 px-4 sm:px-6 lg:px-8">
-      {/* Enhanced Header */}
+    <div
+      id="job-position"
+      className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100 py-8 px-4 sm:px-6 lg:px-8"
+    >
       <div className="text-center mb-12">
         <div className="animate-fade-in">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
@@ -385,14 +391,12 @@ const JobApplying = () => {
         </div>
       </div>
 
-      {/* Enhanced Job Listings */}
       <div className="max-w-7xl mx-auto grid gap-8 md:grid-cols-2 lg:grid-cols-3">
         {jobs.map((job) => (
           <div
             key={job.id}
             className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 border border-blue-100 overflow-hidden transform hover:-translate-y-2 relative"
           >
-            {/* Job Header with Gradient */}
             <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-6 text-white">
               <div className="flex justify-between items-start mb-3">
                 <div className="flex-1">
@@ -417,7 +421,6 @@ const JobApplying = () => {
                 </div>
               </div>
 
-              {/* Job Details */}
               <div className="space-y-2 text-sm text-blue-100">
                 <div className="flex items-center">
                   <svg
@@ -465,7 +468,6 @@ const JobApplying = () => {
               </div>
             </div>
 
-            {/* Job Description */}
             <div className="p-6">
               <p className="text-gray-600 mb-4 text-sm leading-relaxed">
                 {job.description}
@@ -498,18 +500,16 @@ const JobApplying = () => {
                 </div>
               </div>
 
-              {/* Action Buttons */}
               <div className="flex justify-between items-center pt-4 border-t border-gray-100">
                 <span className="text-xs text-gray-500 font-medium">
                   {job.posted}
                 </span>
 
                 <div className="flex items-center gap-3">
-                  {/* Share Dropdown */}
                   <div className="share-dropdown relative">
                     <button
                       onClick={() => toggleShareDropdown(job.id)}
-                      className="flex items-center gap-2 text-gray-600 hover:text-blue-600 transition-all duration-200 p-2 rounded-lg hover:bg-blue-50"
+                      className="flex items-center gap-2 text-gray-600 hover:text-blue-600 transition-all duration-200 p-2 rounded-lg hover:bg-blue-50 cursor-pointer"
                     >
                       <svg
                         className="w-5 h-5"
@@ -527,11 +527,9 @@ const JobApplying = () => {
                       <span className="text-sm font-medium">Share</span>
                     </button>
 
-                    {/* Dropdown Menu */}
                     {activeShareDropdown === job.id && (
                       <div className="absolute bottom-full mb-2 right-0 w-64 bg-white rounded-2xl shadow-2xl border border-gray-200 p-3 animate-scale-in z-10">
                         <div className="space-y-2">
-                          {/* Copy Link Button */}
                           <button
                             onClick={(e) => copyJobLink(job, e)}
                             className="w-full flex items-center gap-3 p-3 rounded-xl border border-gray-200 hover:bg-blue-50 hover:border-blue-200 transition-all duration-200 group"
@@ -561,7 +559,6 @@ const JobApplying = () => {
                             </div>
                           </button>
 
-                          {/* Social Media Platforms */}
                           <div className="grid grid-cols-2 gap-2">
                             {socialMediaPlatforms.map((platform) => (
                               <button
@@ -587,10 +584,9 @@ const JobApplying = () => {
                     )}
                   </div>
 
-                  {/* Apply Button */}
                   <button
                     onClick={() => openPopup(job)}
-                    className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                    className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl cursor-pointer"
                   >
                     Apply Now
                   </button>
@@ -601,7 +597,6 @@ const JobApplying = () => {
         ))}
       </div>
 
-      {/* Enhanced Application Popup */}
       {isPopupOpen && selectedJob && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-fade-in">
           <div className="bg-white rounded-3xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto transform animate-scale-in">
@@ -641,7 +636,6 @@ const JobApplying = () => {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="p-8">
-                {/* Popup Header */}
                 <div className="flex justify-between items-start mb-8">
                   <div>
                     <h3 className="text-2xl font-bold text-gray-900 mb-2">
@@ -671,7 +665,6 @@ const JobApplying = () => {
                   </button>
                 </div>
 
-                {/* Application Form */}
                 <div className="space-y-6">
                   <div className="grid grid-cols-2 gap-4">
                     <div>
@@ -759,7 +752,6 @@ const JobApplying = () => {
                     </div>
                   </div>
 
-                  {/* Enhanced File Upload Section */}
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
                       Resume Upload (Optional)
@@ -841,7 +833,6 @@ const JobApplying = () => {
                         </div>
                       )}
 
-                      {/* Upload Progress Bar */}
                       {uploadProgress > 0 && uploadProgress < 100 && (
                         <div className="animate-fade-in">
                           <div className="flex justify-between text-sm text-gray-600 mb-2">
@@ -869,12 +860,11 @@ const JobApplying = () => {
                   </div>
                 </div>
 
-                {/* Enhanced Submit Button */}
                 <div className="mt-8">
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className={`w-full py-4 px-6 rounded-xl font-semibold text-white transition-all duration-300 transform hover:scale-105 ${
+                    className={`w-full py-4 px-6 rounded-xl font-semibold text-white transition-all duration-300 transform hover:scale-105 cursor-pointer ${
                       isSubmitting
                         ? "bg-gray-400 cursor-not-allowed"
                         : "bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 shadow-lg hover:shadow-xl"
@@ -896,7 +886,6 @@ const JobApplying = () => {
         </div>
       )}
 
-      {/* Add some custom animations */}
       <style jsx>{`
         @keyframes fade-in {
           from {

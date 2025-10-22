@@ -52,8 +52,8 @@ const HeroCarrer = () => {
         </div>
 
         <div className="flex flex-col sm:flex-row gap-4 mb-12 justify-center items-center">
-          <a
-            href="/administrative-jobs"
+          <Link
+            to="/administrative-jobs"
             className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center cursor-pointer"
           >
             <span>Administrative & Management Jobs</span>
@@ -70,10 +70,10 @@ const HeroCarrer = () => {
                 d="M14 5l7 7m0 0l-7 7m7-7H3"
               />
             </svg>
-          </a>
+          </Link>
 
-          <a
-            href="/hands-on-jobs"
+          <Link
+            to="/hands-on-jobs"
             className="px-8 py-4 bg-white/10 backdrop-blur-sm text-white font-semibold rounded-lg border border-white/20 hover:bg-white/20 transition-all duration-300 flex items-center justify-center"
           >
             <span>Hands-on Jobs</span>
@@ -90,7 +90,7 @@ const HeroCarrer = () => {
                 d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
               />
             </svg>
-          </a>
+          </Link>
         </div>
       </div>
 

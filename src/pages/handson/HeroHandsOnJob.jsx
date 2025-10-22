@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 const HeroHandsOnJob = () => {
   return (
     <div className="relative min-h-screen bg-gray-900 overflow-hidden py-20">
-      {/* Background Image with Overlay */}
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{
@@ -15,10 +14,8 @@ const HeroHandsOnJob = () => {
         <div className="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
       </div>
 
-      {/* Content */}
       <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 min-h-screen flex items-center">
         <div className="max-w-4xl mx-auto text-center">
-          {/* Badge */}
           <div className="inline-flex items-center px-4 py-2 rounded-full bg-blue-600/20 border border-blue-500/30 backdrop-blur-sm mb-8">
             <span className="w-2 h-2 bg-blue-400 rounded-full mr-2 animate-pulse"></span>
             <span className="text-blue-300 text-sm font-medium">
@@ -26,7 +23,6 @@ const HeroHandsOnJob = () => {
             </span>
           </div>
 
-          {/* Main Heading */}
           <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-white mb-6 leading-tight">
             Build Your Future
             <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">
@@ -34,14 +30,12 @@ const HeroHandsOnJob = () => {
             </span>
           </h1>
 
-          {/* Subheading */}
           <p className="text-xl sm:text-2xl text-gray-200 mb-8 max-w-3xl mx-auto leading-relaxed">
             Discover skilled trades, craftsmanship, and hands-on careers that
             shape our world. From construction to creative arts, find
             opportunities that match your passion.
           </p>
 
-          {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
             <button
               onClick={() => {

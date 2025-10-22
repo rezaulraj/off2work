@@ -760,6 +760,7 @@ const JobApplying = () => {
                         name="experience"
                         value={formData.experience}
                         onChange={handleInputChange}
+                        required
                         className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white"
                       >
                         <option value="">Select experience</option>
@@ -792,13 +793,14 @@ const JobApplying = () => {
 
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Additional Message (Optional)
+                      Say Something About Yourself
                     </label>
                     <textarea
                       name="message"
                       value={formData.message}
                       onChange={handleInputChange}
                       rows="4"
+                      required
                       className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
                       placeholder="Tell us why you're interested in this position, any relevant experience, or anything else you'd like to share..."
                     />
@@ -806,7 +808,7 @@ const JobApplying = () => {
 
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Resume Upload (Optional)
+                      Resume Upload
                     </label>
                     <div className="space-y-3">
                       {!formData.resume ? (
@@ -907,6 +909,7 @@ const JobApplying = () => {
                         onChange={handleFileUpload}
                         accept=".pdf,.doc,.docx"
                         className="hidden"
+                        required
                       />
                     </div>
                   </div>

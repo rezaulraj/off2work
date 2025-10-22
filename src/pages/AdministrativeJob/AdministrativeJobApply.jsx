@@ -884,13 +884,14 @@ const AdministrativeJobApply = () => {
 
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Additional Message (Optional)
+                      Say Something About Yourself
                     </label>
                     <textarea
                       name="message"
                       value={formData.message}
                       onChange={handleInputChange}
                       rows="3"
+                      required
                       className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200"
                       placeholder="Any additional information you'd like to share with the hiring team..."
                     />
@@ -898,7 +899,7 @@ const AdministrativeJobApply = () => {
 
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Resume Upload (Optional)
+                      Resume Upload
                     </label>
                     <div className="space-y-3">
                       {!formData.resume ? (
@@ -999,6 +1000,7 @@ const AdministrativeJobApply = () => {
                         onChange={handleFileUpload}
                         accept=".pdf,.doc,.docx"
                         className="hidden"
+                        required
                       />
                     </div>
                   </div>
@@ -1030,7 +1032,7 @@ const AdministrativeJobApply = () => {
         </div>
       )}
 
-      <style jsx>{`
+      <style jsx="true">{`
         @keyframes fade-in {
           from {
             opacity: 0;

@@ -42,10 +42,24 @@ const HeroHandsOnJob = () => {
                 const section = document.querySelector("#job-position");
                 section?.scrollIntoView({ behavior: "smooth" });
               }}
-              className="group relative px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-blue-500/25 cursor-pointer"
+              className="group px-8 py-4 border-2 border-blue-700/30 hover:border-blue-700/50 text-white font-semibold rounded-xl transition-all duration-300 transform hover:scale-105 backdrop-blur-md bg-blue-700 hover:bg-blue-800 min-w-[200px] cursor-pointer"
             >
-              <span className="relative z-10">View Open Positions</span>
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-emerald-600 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <span className="flex items-center justify-center">
+                Upload Resume
+                <svg
+                  className="w-5 h-5 ml-2 transform group-hover:translate-y-1 transition-transform duration-300"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"
+                  />
+                </svg>
+              </span>
             </button>
 
             <Link
@@ -53,7 +67,7 @@ const HeroHandsOnJob = () => {
               className="group px-8 py-4 border-2 border-white/30 hover:border-white/50 text-white font-semibold rounded-lg transition-all duration-300 transform hover:scale-105 backdrop-blur-sm hover:bg-white/10"
             >
               <span className="flex items-center justify-center">
-                Find More Jobs
+                Find Administrative Jobs
                 <svg
                   className="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform duration-300"
                   fill="none"

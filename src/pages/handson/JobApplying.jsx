@@ -410,7 +410,7 @@ const JobApplying = () => {
         {jobs.map((job) => (
           <div
             key={job.id}
-            className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 border border-blue-100 overflow-hidden transform hover:-translate-y-2 relative"
+            className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 border border-blue-100 overflow-hidden transform hover:-translate-y-2 relative flex flex-col"
           >
             <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-6 text-white">
               <div className="flex justify-between items-start mb-3">
@@ -494,7 +494,7 @@ const JobApplying = () => {
               </div>
             </div>
 
-            <div className="p-6">
+            <div className="p-6 flex-1">
               <p className="text-gray-600 mb-4 text-sm leading-relaxed">
                 {job.description}
               </p>
@@ -525,20 +525,39 @@ const JobApplying = () => {
                   ))}
                 </div>
               </div>
+            </div>
 
-              <div className="flex justify-between items-center pt-4 border-t border-gray-100">
-                <span className="text-xs text-gray-500 font-medium">
-                  {job.posted}
-                </span>
+            {/* Bottom Section with Apply, Share, and Posted Date */}
+            <div className="px-6 pb-6 pt-4 border-t border-gray-100 bg-gray-50 rounded-b-2xl">
+              <div className="flex items-center justify-between">
+                {/* Posted Date */}
+                <div className="flex items-center text-gray-500">
+                  <svg
+                    className="w-4 h-4 mr-1 text-gray-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                  <span className="text-sm font-medium">{job.posted}</span>
+                </div>
 
+                {/* Action Buttons */}
                 <div className="flex items-center gap-3">
+                  {/* Share Button */}
                   <div className="share-dropdown relative">
                     <button
                       onClick={() => toggleShareDropdown(job.id)}
-                      className="flex items-center gap-2 text-gray-600 hover:text-blue-600 transition-all duration-200 p-2 rounded-lg hover:bg-blue-50 cursor-pointer"
+                      className="flex items-center gap-2 text-gray-600 hover:text-blue-600 transition-all duration-200 p-2 rounded-lg hover:bg-blue-50 cursor-pointer border border-gray-200 hover:border-blue-200"
                     >
                       <svg
-                        className="w-5 h-5"
+                        className="w-4 h-4"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -554,7 +573,7 @@ const JobApplying = () => {
                     </button>
 
                     {activeShareDropdown === job.id && (
-                      <div className="absolute bottom-full mb-2 -right-6 w-64 bg-white rounded-2xl shadow-2xl border border-gray-200 p-3 animate-scale-in z-10">
+                      <div className="absolute bottom-full mb-2 right-0 w-64 bg-white rounded-2xl shadow-2xl border border-gray-200 p-3 animate-scale-in z-10">
                         <div className="space-y-2">
                           <button
                             onClick={(e) => copyJobLink(job, e)}
@@ -610,9 +629,10 @@ const JobApplying = () => {
                     )}
                   </div>
 
+                  {/* Apply Button */}
                   <button
                     onClick={() => openPopup(job)}
-                    className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl cursor-pointer"
+                    className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-6 py-2 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl cursor-pointer text-sm"
                   >
                     Apply Now
                   </button>

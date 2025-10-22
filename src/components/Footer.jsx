@@ -90,6 +90,7 @@ const Footer = () => {
                 { text: t("footer.areow"), path: "/areas-of-work" },
                 { text: t("footer.clents"), path: "/client-success-stories" },
                 { text: t("footer.abous"), path: "/about-us" },
+                { text: "Carrer", path: "/carrer" },
               ].map((link, index) => (
                 <li key={index}>
                   <Link

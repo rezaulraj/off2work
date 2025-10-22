@@ -573,7 +573,7 @@ const JobApplying = () => {
                     </button>
 
                     {activeShareDropdown === job.id && (
-                      <div className="absolute bottom-full mb-2 right-0 w-64 bg-white rounded-2xl shadow-2xl border border-gray-200 p-3 animate-scale-in z-10">
+                      <div className="absolute bottom-full mb-2 -right-6 w-64 bg-white rounded-2xl shadow-2xl border border-gray-200 p-3 animate-scale-in z-10">
                         <div className="space-y-2">
                           <button
                             onClick={(e) => copyJobLink(job, e)}
@@ -961,7 +961,7 @@ const JobApplying = () => {
         </div>
       )}
 
-      <style jsx>{`
+      <style jsx="true">{`
         @keyframes fade-in {
           from {
             opacity: 0;

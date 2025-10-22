@@ -554,7 +554,7 @@ const JobApplying = () => {
                     </button>
 
                     {activeShareDropdown === job.id && (
-                      <div className="absolute bottom-full mb-2 right-0 w-64 bg-white rounded-2xl shadow-2xl border border-gray-200 p-3 animate-scale-in z-10">
+                      <div className="absolute bottom-full mb-2 -right-6 w-64 bg-white rounded-2xl shadow-2xl border border-gray-200 p-3 animate-scale-in z-10">
                         <div className="space-y-2">
                           <button
                             onClick={(e) => copyJobLink(job, e)}
@@ -754,7 +754,7 @@ const JobApplying = () => {
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        Experience Level
+                        Experience Level *
                       </label>
                       <select
                         name="experience"
@@ -793,7 +793,7 @@ const JobApplying = () => {
 
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Say Something About Yourself
+                      Say Something About Yourself *
                     </label>
                     <textarea
                       name="message"
@@ -808,7 +808,7 @@ const JobApplying = () => {
 
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Resume Upload
+                      Resume Upload *
                     </label>
                     <div className="space-y-3">
                       {!formData.resume ? (

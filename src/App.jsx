@@ -17,6 +17,8 @@ import TrustedWorkForce from "./pages/services/TrustedWorkForce";
 import WorkPermit from "./pages/services/WorkPermit";
 import ThankYouPage from "./components/ThankYouPage";
 import Carrer from "./pages/carrer/Carrer";
+import HandOnJob from "./pages/handson/HandOnJob";
+import AdministrativeJob from "./pages/AdministrativeJob/AdministrativeJob";
 
 NProgress.configure({
   minimum: 0.3,
@@ -229,6 +231,8 @@ function App() {
           <Route path="/about-us" element={<AboutUpPage />} />
           <Route path="/carrer" element={<Carrer />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/hands-on-jobs" element={<HandOnJob />} />
+          <Route path="/administrative-jobs" element={<AdministrativeJob />} />
           <Route path="/thank-you" element={<ThankYouPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>

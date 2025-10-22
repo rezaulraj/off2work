@@ -1,12 +1,12 @@
 import React from "react";
 import HeroCarrer from "./HeroCarrer";
-import JobApplying from "./JobApplying";
+import ContactSection from "../home/ContactSection";
 
 const Carrer = () => {
   return (
-    <div>
+    <div className="min-h-screen">
       <HeroCarrer />
-      <JobApplying />
+      <ContactSection />
     </div>
   );
 };

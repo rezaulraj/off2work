@@ -5,10 +5,18 @@ import {
   FaLinkedin,
   FaTelegram,
   FaWhatsapp,
+  FaBriefcase,
+  FaChartLine,
+  FaUsers,
+  FaFileAlt,
+  FaCalendarAlt,
+  FaDollarSign,
+  FaGraduationCap,
+  FaUserFriends,
 } from "react-icons/fa";
 import { FaX } from "react-icons/fa6";
 
-const JobApplying = () => {
+const AdministrativeJobApply = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [selectedJob, setSelectedJob] = useState(null);
   const [formData, setFormData] = useState({
@@ -18,6 +26,8 @@ const JobApplying = () => {
     experience: "",
     resume: null,
     availability: "Immediate",
+    coverLetter: "",
+    message: "",
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -28,123 +38,227 @@ const JobApplying = () => {
   const jobs = [
     {
       id: 1,
-      title: "Construction Laborer",
-      department: "Construction",
+      title: "Executive Administrative Assistant",
+      department: "Executive Support",
       type: "Full-time",
-      location: "Chicago, IL",
-      salary: "$18 - $25/hour",
-      experience: "0-2 years",
+      location: "New York, NY",
+      salary: "$65,000 - $85,000",
+      experience: "3-5 years",
       description:
-        "Perform various physical tasks at construction sites including material handling, site cleanup, and assisting skilled trades.",
+        "Provide high-level administrative support to C-level executives, managing complex calendars, coordinating meetings, and handling confidential information with discretion.",
       requirements: [
-        "Physical Stamina",
-        "Basic Tools Knowledge",
-        "Teamwork",
-        "Safety Awareness",
+        "Calendar Management",
+        "Executive Communication",
+        "Confidentiality",
+        "MS Office Suite",
       ],
-      posted: "1 day ago",
+      posted: "2 days ago",
       urgency: "Urgent",
-      shift: "Day Shift",
+      shift: "9 AM - 5 PM",
+      education: "Bachelor's Preferred",
+      benefits: [
+        "Health Insurance",
+        "401(k)",
+        "Paid Time Off",
+        "Bonus Potential",
+      ],
+      vacancies: 3,
     },
     {
       id: 2,
-      title: "Warehouse Associate",
-      department: "Logistics",
+      title: "Sales Coordinator",
+      department: "Sales & Marketing",
       type: "Full-time",
-      location: "Dallas, TX",
-      salary: "$16 - $22/hour",
-      experience: "Entry Level",
+      location: "Chicago, IL",
+      salary: "$55,000 - $70,000",
+      experience: "2-4 years",
       description:
-        "Handle receiving, storing, and shipping products in a fast-paced warehouse environment.",
+        "Support sales team with administrative tasks, manage client databases, prepare sales reports, and coordinate marketing materials distribution.",
       requirements: [
-        "Lifting 50+ lbs",
-        "Forklift Certified",
-        "Inventory Management",
-        "Attention to Detail",
+        "CRM Software",
+        "Sales Support",
+        "Data Analysis",
+        "Client Communication",
       ],
-      posted: "3 days ago",
+      posted: "1 day ago",
       urgency: "High",
-      shift: "Various Shifts",
+      shift: "Flexible",
+      education: "Bachelor's Degree",
+      benefits: [
+        "Commission",
+        "Health Dental",
+        "Remote Options",
+        "Career Growth",
+      ],
+      vacancies: 5,
     },
     {
       id: 3,
-      title: "Landscape Laborer",
-      department: "Landscaping",
-      type: "Seasonal",
-      location: "Phoenix, AZ",
-      salary: "$15 - $20/hour",
-      experience: "Entry Level",
+      title: "Marketing Assistant",
+      department: "Marketing",
+      type: "Full-time",
+      location: "Austin, TX",
+      salary: "$50,000 - $65,000",
+      experience: "1-3 years",
       description:
-        "Perform landscaping duties including mowing, planting, trimming, and general grounds maintenance.",
+        "Assist marketing team with campaign coordination, social media management, content creation, and market research analysis.",
       requirements: [
-        "Physical Fitness",
-        "Outdoor Work",
-        "Basic Equipment Operation",
-        "Team Player",
+        "Social Media",
+        "Content Creation",
+        "Analytics",
+        "Creative Writing",
       ],
-      posted: "2 days ago",
+      posted: "3 days ago",
       urgency: "Medium",
-      shift: "Day Shift",
+      shift: "9 AM - 5 PM",
+      education: "Marketing Degree",
+      benefits: [
+        "Creative Freedom",
+        "Health Benefits",
+        "Remote Work",
+        "Team Events",
+      ],
+      vacancies: 2,
     },
     {
       id: 4,
-      title: "General Laborer",
-      department: "Manufacturing",
-      type: "Temp-to-Hire",
-      location: "Detroit, MI",
-      salary: "$17 - $23/hour",
-      experience: "0-1 year",
+      title: "Office Manager",
+      department: "Operations",
+      type: "Full-time",
+      location: "Boston, MA",
+      salary: "$60,000 - $75,000",
+      experience: "4-6 years",
       description:
-        "Assist in production line operations, material handling, and general factory maintenance tasks.",
+        "Oversee daily office operations, manage administrative staff, coordinate facility maintenance, and handle vendor relationships.",
       requirements: [
-        "Basic Math",
-        "Mechanical Aptitude",
-        "Quality Focus",
-        "Reliability",
+        "Team Management",
+        "Budgeting",
+        "Vendor Coordination",
+        "Office Software",
       ],
       posted: "5 days ago",
-      urgency: "High",
-      shift: "Night Shift",
+      urgency: "Medium",
+      shift: "8 AM - 4 PM",
+      education: "Business Administration",
+      benefits: [
+        "Leadership Role",
+        "Comprehensive Benefits",
+        "Bonus",
+        "Professional Development",
+      ],
+      vacancies: 1,
     },
     {
       id: 5,
-      title: "Mover / Helper",
-      department: "Moving Services",
-      type: "Part-time",
-      location: "Denver, CO",
-      salary: "$15 - $19/hour + Tips",
-      experience: "Entry Level",
+      title: "Sales Administrator",
+      department: "Sales Operations",
+      type: "Full-time",
+      location: "San Francisco, CA",
+      salary: "$58,000 - $72,000",
+      experience: "2-3 years",
       description:
-        "Assist with residential and commercial moving jobs, loading/unloading trucks, and furniture assembly.",
+        "Manage sales documentation, process orders, maintain customer records, and provide administrative support to sales representatives.",
       requirements: [
-        "Heavy Lifting",
+        "Order Processing",
+        "Database Management",
         "Customer Service",
-        "Driving Record",
-        "Physical Strength",
+        "Documentation",
       ],
       posted: "Just now",
       urgency: "Urgent",
-      shift: "Flexible",
+      shift: "Flexible Hours",
+      education: "Associate's Degree",
+      benefits: [
+        "Sales Bonus",
+        "Health Insurance",
+        "Flex Schedule",
+        "Training",
+      ],
+      vacancies: 4,
     },
     {
       id: 6,
-      title: "Production Assistant",
-      department: "Manufacturing",
+      title: "Marketing Coordinator",
+      department: "Marketing",
       type: "Full-time",
-      location: "Atlanta, GA",
-      salary: "$16 - $21/hour",
-      experience: "0-2 years",
+      location: "Seattle, WA",
+      salary: "$62,000 - $78,000",
+      experience: "3-5 years",
       description:
-        "Support production operations by performing assembly tasks, quality checks, and material preparation.",
+        "Coordinate marketing campaigns, manage event logistics, collaborate with creative teams, and analyze campaign performance metrics.",
       requirements: [
-        "Hand Tools",
-        "Quality Control",
-        "Assembly Skills",
-        "Fast Learner",
+        "Campaign Management",
+        "Event Planning",
+        "Project Coordination",
+        "Marketing Analytics",
       ],
       posted: "1 week ago",
+      urgency: "High",
+      shift: "9 AM - 5 PM",
+      education: "Marketing/Communications",
+      benefits: [
+        "Performance Bonus",
+        "Health/Dental/Vision",
+        "Remote Hybrid",
+        "Stock Options",
+      ],
+      vacancies: 3,
+    },
+    {
+      id: 7,
+      title: "Administrative Specialist",
+      department: "Administration",
+      type: "Full-time",
+      location: "Miami, FL",
+      salary: "$48,000 - $62,000",
+      experience: "2-4 years",
+      description:
+        "Provide comprehensive administrative support, manage office supplies, coordinate travel arrangements, and assist with special projects.",
+      requirements: [
+        "Office Management",
+        "Travel Coordination",
+        "Multi-tasking",
+        "Communication Skills",
+      ],
+      posted: "2 days ago",
       urgency: "Medium",
-      shift: "Day Shift",
+      shift: "8:30 AM - 4:30 PM",
+      education: "High School Diploma",
+      benefits: [
+        "Paid Time Off",
+        "Health Benefits",
+        "Career Advancement",
+        "Work-Life Balance",
+      ],
+      vacancies: 6,
+    },
+    {
+      id: 8,
+      title: "Client Relations Assistant",
+      department: "Customer Success",
+      type: "Full-time",
+      location: "Denver, CO",
+      salary: "$52,000 - $68,000",
+      experience: "1-2 years",
+      description:
+        "Support client relations team with administrative tasks, maintain client databases, schedule meetings, and handle client inquiries.",
+      requirements: [
+        "Client Service",
+        "Database Management",
+        "Scheduling",
+        "Problem Solving",
+      ],
+      posted: "4 days ago",
+      urgency: "High",
+      shift: "Flexible",
+      education: "Business Preferred",
+      benefits: [
+        "Client Bonus",
+        "Health Insurance",
+        "Remote Work",
+        "Commission",
+      ],
+      vacancies: 2,
     },
   ];
 
@@ -214,7 +328,7 @@ const JobApplying = () => {
         `mailto:?subject=${encodeURIComponent(
           `Job Opportunity: ${job.title}`
         )}&body=${encodeURIComponent(
-          `Check out this job opening:\n\nPosition: ${job.title}\nLocation: ${job.location}\nType: ${job.type}\nSalary: ${job.salary}\nDepartment: ${job.department}\n\nApply here: ${window.location.href}`
+          `Check out this job opening:\n\nPosition: ${job.title}\nLocation: ${job.location}\nType: ${job.type}\nSalary: ${job.salary}\nDepartment: ${job.department}\nVacancies: ${job.vacancies}\n\nApply here: ${window.location.href}`
         )}`,
     },
   ];
@@ -233,6 +347,8 @@ const JobApplying = () => {
       experience: "",
       resume: null,
       availability: "Immediate",
+      coverLetter: "",
+      message: "",
     });
   };
 
@@ -352,6 +468,12 @@ const JobApplying = () => {
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
   };
 
+  const getVacancyColor = (vacancies) => {
+    if (vacancies <= 2) return "text-red-600 bg-red-50 border-red-200";
+    if (vacancies <= 4) return "text-orange-600 bg-orange-50 border-orange-200";
+    return "text-green-600 bg-green-50 border-green-200";
+  };
+
   React.useEffect(() => {
     const handleClickOutside = (event) => {
       if (!event.target.closest(".share-dropdown")) {
@@ -365,28 +487,29 @@ const JobApplying = () => {
 
   return (
     <div
-      id="job-position"
-      className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100 py-8 px-4 sm:px-6 lg:px-8"
+      id="job-application"
+      className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50 py-8 px-4 sm:px-6 lg:px-8"
     >
       <div className="text-center mb-12">
         <div className="animate-fade-in">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-            Labor & Physical Work Jobs
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+            Administrative & Professional Jobs
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            Immediate openings for hardworking individuals. Start your new
-            career today with competitive pay and benefits.
+            Discover rewarding career opportunities in administration, sales,
+            and marketing. Join dynamic teams and grow your professional career
+            with top companies.
           </p>
         </div>
         <div className="flex flex-wrap justify-center gap-4 mt-6">
+          <span className="bg-purple-500 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+            💼 Professional Growth
+          </span>
           <span className="bg-blue-500 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-            💰 Same Day Pay Available
+            🏢 Hybrid Work Options
           </span>
           <span className="bg-green-500 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-            📅 Weekly Pay
-          </span>
-          <span className="bg-purple-500 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-            ⏰ Overtime Available
+            📈 Career Advancement
           </span>
         </div>
       </div>
@@ -395,12 +518,12 @@ const JobApplying = () => {
         {jobs.map((job) => (
           <div
             key={job.id}
-            className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 border border-blue-100 overflow-hidden transform hover:-translate-y-2 relative"
+            className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 border border-purple-100 overflow-hidden transform hover:-translate-y-2 relative"
           >
             <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-6 text-white">
               <div className="flex justify-between items-start mb-3">
                 <div className="flex-1">
-                  <h3 className="text-xl font-bold mb-2 group-hover:text-blue-100 transition-colors">
+                  <h3 className="text-xl font-bold mb-2 group-hover:text-purple-100 transition-colors">
                     {job.title}
                   </h3>
                   <div className="flex flex-wrap gap-2 mb-3">
@@ -437,33 +560,19 @@ const JobApplying = () => {
                   {job.location}
                 </div>
                 <div className="flex items-center">
-                  <svg
-                    className="w-4 h-4 mr-2"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z" />
-                    <path
-                      fillRule="evenodd"
-                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
+                  <FaDollarSign className="w-4 h-4 mr-2" />
                   {job.salary}
                 </div>
                 <div className="flex items-center">
-                  <svg
-                    className="w-4 h-4 mr-2"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
+                  <FaUserFriends className="w-4 h-4 mr-2" />
+                  <span
+                    className={`px-2 py-1 rounded-full text-xs font-semibold ${getVacancyColor(
+                      job.vacancies
+                    )}`}
                   >
-                    <path
-                      fillRule="evenodd"
-                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  {job.shift}
+                    {job.vacancies}{" "}
+                    {job.vacancies === 1 ? "Vacancy" : "Vacancies"}
+                  </span>
                 </div>
               </div>
             </div>
@@ -476,7 +585,7 @@ const JobApplying = () => {
               <div className="mb-4">
                 <h4 className="font-semibold text-gray-900 mb-3 flex items-center">
                   <svg
-                    className="w-4 h-4 mr-2 text-blue-500"
+                    className="w-4 h-4 mr-2 text-purple-500"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
@@ -509,7 +618,7 @@ const JobApplying = () => {
                   <div className="share-dropdown relative">
                     <button
                       onClick={() => toggleShareDropdown(job.id)}
-                      className="flex items-center gap-2 text-gray-600 hover:text-blue-600 transition-all duration-200 p-2 rounded-lg hover:bg-blue-50 cursor-pointer"
+                      className="flex items-center gap-2 text-gray-600 hover:text-purple-600 transition-all duration-200 p-2 rounded-lg hover:bg-purple-50 cursor-pointer"
                     >
                       <svg
                         className="w-5 h-5"
@@ -532,11 +641,11 @@ const JobApplying = () => {
                         <div className="space-y-2">
                           <button
                             onClick={(e) => copyJobLink(job, e)}
-                            className="w-full flex items-center gap-3 p-3 rounded-xl border border-gray-200 hover:bg-blue-50 hover:border-blue-200 transition-all duration-200 group"
+                            className="w-full flex items-center gap-3 p-3 rounded-xl border border-gray-200 hover:bg-purple-50 hover:border-purple-200 transition-all duration-200 group"
                           >
-                            <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center group-hover:bg-blue-200 transition-colors">
+                            <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center group-hover:bg-purple-200 transition-colors">
                               <svg
-                                className="w-4 h-4 text-blue-600"
+                                className="w-4 h-4 text-purple-600"
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
@@ -599,7 +708,7 @@ const JobApplying = () => {
 
       {isPopupOpen && selectedJob && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-fade-in">
-          <div className="bg-white rounded-3xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto transform animate-scale-in">
+          <div className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto transform animate-scale-in">
             {isSubmitted ? (
               <div className="p-8 text-center">
                 <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6 animate-bounce">
@@ -620,7 +729,9 @@ const JobApplying = () => {
                 </h3>
                 <p className="text-gray-600 mb-6 text-lg">
                   Thank you for applying to the{" "}
-                  <strong className="text-blue-600">{selectedJob.title}</strong>{" "}
+                  <strong className="text-purple-600">
+                    {selectedJob.title}
+                  </strong>{" "}
                   position.
                 </p>
                 <p className="text-gray-500 mb-8">
@@ -629,7 +740,7 @@ const JobApplying = () => {
                 </p>
                 <button
                   onClick={closePopup}
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105"
+                  className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105"
                 >
                   Close Window
                 </button>
@@ -641,20 +752,31 @@ const JobApplying = () => {
                     <h3 className="text-2xl font-bold text-gray-900 mb-2">
                       Apply for {selectedJob.title}
                     </h3>
-                    <p className="text-gray-600 flex items-center">
-                      <svg
-                        className="w-4 h-4 mr-2 text-blue-500"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
+                    <div className="flex items-center gap-4 text-gray-600 flex-wrap">
+                      <p className="flex items-center">
+                        <svg
+                          className="w-4 h-4 mr-2 text-purple-500"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                        {selectedJob.department} • {selectedJob.location}
+                      </p>
+                      <span
+                        className={`px-2 py-1 rounded-full text-xs font-semibold ${getVacancyColor(
+                          selectedJob.vacancies
+                        )}`}
                       >
-                        <path
-                          fillRule="evenodd"
-                          d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                      {selectedJob.department} • {selectedJob.location}
-                    </p>
+                        {selectedJob.vacancies}{" "}
+                        {selectedJob.vacancies === 1 ? "Vacancy" : "Vacancies"}{" "}
+                        Left
+                      </span>
+                    </div>
                   </div>
                   <button
                     type="button"
@@ -677,7 +799,7 @@ const JobApplying = () => {
                         value={formData.name}
                         onChange={handleInputChange}
                         required
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200"
                         placeholder="John Doe"
                       />
                     </div>
@@ -692,7 +814,7 @@ const JobApplying = () => {
                         value={formData.phone}
                         onChange={handleInputChange}
                         required
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200"
                         placeholder="(555) 123-4567"
                       />
                     </div>
@@ -708,7 +830,7 @@ const JobApplying = () => {
                       value={formData.email}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200"
                       placeholder="john.doe@example.com"
                     />
                   </div>
@@ -722,13 +844,13 @@ const JobApplying = () => {
                         name="experience"
                         value={formData.experience}
                         onChange={handleInputChange}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200 bg-white"
                       >
                         <option value="">Select experience</option>
                         <option value="No Experience">No Experience</option>
                         <option value="0-1 year">0-1 year</option>
                         <option value="1-3 years">1-3 years</option>
-                        <option value="3+ years">3+ years</option>
+                        <option value="3-5 years">3-5 years</option>
                         <option value="5+ years">5+ years</option>
                       </select>
                     </div>
@@ -742,7 +864,7 @@ const JobApplying = () => {
                         value={formData.availability}
                         onChange={handleInputChange}
                         required
-                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white"
+                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200 bg-white"
                       >
                         <option value="Immediate">Immediate</option>
                         <option value="1 week">Within 1 week</option>
@@ -754,12 +876,40 @@ const JobApplying = () => {
 
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Cover Letter
+                    </label>
+                    <textarea
+                      name="coverLetter"
+                      value={formData.coverLetter}
+                      onChange={handleInputChange}
+                      rows="3"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200"
+                      placeholder="Briefly describe why you're interested in this position..."
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Additional Message (Optional)
+                    </label>
+                    <textarea
+                      name="message"
+                      value={formData.message}
+                      onChange={handleInputChange}
+                      rows="3"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all duration-200"
+                      placeholder="Any additional information you'd like to share with the hiring team..."
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
                       Resume Upload (Optional)
                     </label>
                     <div className="space-y-3">
                       {!formData.resume ? (
                         <div
-                          className="border-2 border-dashed border-gray-300 rounded-2xl p-6 text-center transition-all duration-300 hover:border-blue-400 hover:bg-blue-50 cursor-pointer"
+                          className="border-2 border-dashed border-gray-300 rounded-2xl p-6 text-center transition-all duration-300 hover:border-purple-400 hover:bg-purple-50 cursor-pointer"
                           onClick={() => fileInputRef.current?.click()}
                         >
                           <svg
@@ -841,7 +991,7 @@ const JobApplying = () => {
                           </div>
                           <div className="w-full bg-gray-200 rounded-full h-2">
                             <div
-                              className="bg-blue-600 h-2 rounded-full transition-all duration-300 ease-out"
+                              className="bg-purple-600 h-2 rounded-full transition-all duration-300 ease-out"
                               style={{ width: `${uploadProgress}%` }}
                             ></div>
                           </div>
@@ -867,7 +1017,7 @@ const JobApplying = () => {
                     className={`w-full py-4 px-6 rounded-xl font-semibold text-white transition-all duration-300 transform hover:scale-105 cursor-pointer ${
                       isSubmitting
                         ? "bg-gray-400 cursor-not-allowed"
-                        : "bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 shadow-lg hover:shadow-xl"
+                        : "bg-gradient-to-r from-purple-500 to-blue-600 hover:from-purple-600 hover:to-blue-700 shadow-lg hover:shadow-xl"
                     }`}
                   >
                     {isSubmitting ? (
@@ -918,4 +1068,4 @@ const JobApplying = () => {
   );
 };
 
-export default JobApplying;
+export default AdministrativeJobApply;

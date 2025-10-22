@@ -103,7 +103,7 @@ const HeroAdministrativeJob = () => {
                 const section = document.querySelector("#job-application");
                 section?.scrollIntoView({ behavior: "smooth" });
               }}
-              className="group px-8 py-4 border-2 border-white/30 hover:border-white/50 text-white font-semibold rounded-xl transition-all duration-300 transform hover:scale-105 backdrop-blur-md bg-white/5 hover:bg-white/10 min-w-[200px]"
+              className="group px-8 py-4 border-2 border-white/30 hover:border-white/50 text-white font-semibold rounded-xl transition-all duration-300 transform hover:scale-105 backdrop-blur-md bg-white/5 hover:bg-white/10 min-w-[200px] cursor-pointer"
             >
               <span className="flex items-center justify-center">
                 Upload Resume

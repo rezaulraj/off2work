@@ -48,7 +48,7 @@ const HeroHandsOnJob = () => {
                 const section = document.querySelector("#job-position");
                 section?.scrollIntoView({ behavior: "smooth" });
               }}
-              className="group relative px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-blue-500/25"
+              className="group relative px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-blue-500/25 cursor-pointer"
             >
               <span className="relative z-10">View Open Positions</span>
               <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-emerald-600 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>

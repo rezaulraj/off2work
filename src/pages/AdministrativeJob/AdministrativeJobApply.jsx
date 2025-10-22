@@ -5,13 +5,7 @@ import {
   FaLinkedin,
   FaTelegram,
   FaWhatsapp,
-  FaBriefcase,
-  FaChartLine,
-  FaUsers,
-  FaFileAlt,
-  FaCalendarAlt,
   FaDollarSign,
-  FaGraduationCap,
   FaUserFriends,
 } from "react-icons/fa";
 import { FaX } from "react-icons/fa6";
@@ -42,7 +36,7 @@ const AdministrativeJobApply = () => {
       department: "Executive Support",
       type: "Full-time",
       location: "New York, NY",
-      salary: "$65,000 - $85,000",
+      salary: "$20,000 - $35,000",
       experience: "3-5 years",
       description:
         "Provide high-level administrative support to C-level executives, managing complex calendars, coordinating meetings, and handling confidential information with discretion.",
@@ -70,7 +64,7 @@ const AdministrativeJobApply = () => {
       department: "Sales & Marketing",
       type: "Full-time",
       location: "Chicago, IL",
-      salary: "$55,000 - $70,000",
+      salary: "$15,000 - $25,000",
       experience: "2-4 years",
       description:
         "Support sales team with administrative tasks, manage client databases, prepare sales reports, and coordinate marketing materials distribution.",
@@ -98,7 +92,7 @@ const AdministrativeJobApply = () => {
       department: "Marketing",
       type: "Full-time",
       location: "Austin, TX",
-      salary: "$50,000 - $65,000",
+      salary: "$10,000 - $20,000",
       experience: "1-3 years",
       description:
         "Assist marketing team with campaign coordination, social media management, content creation, and market research analysis.",
@@ -126,7 +120,7 @@ const AdministrativeJobApply = () => {
       department: "Operations",
       type: "Full-time",
       location: "Boston, MA",
-      salary: "$60,000 - $75,000",
+      salary: "$16,000 - $25,000",
       experience: "4-6 years",
       description:
         "Oversee daily office operations, manage administrative staff, coordinate facility maintenance, and handle vendor relationships.",
@@ -154,7 +148,7 @@ const AdministrativeJobApply = () => {
       department: "Sales Operations",
       type: "Full-time",
       location: "San Francisco, CA",
-      salary: "$58,000 - $72,000",
+      salary: "$20,000 - $32,000",
       experience: "2-3 years",
       description:
         "Manage sales documentation, process orders, maintain customer records, and provide administrative support to sales representatives.",
@@ -182,7 +176,7 @@ const AdministrativeJobApply = () => {
       department: "Marketing",
       type: "Full-time",
       location: "Seattle, WA",
-      salary: "$62,000 - $78,000",
+      salary: "$16,000 - $25,000",
       experience: "3-5 years",
       description:
         "Coordinate marketing campaigns, manage event logistics, collaborate with creative teams, and analyze campaign performance metrics.",
@@ -210,7 +204,7 @@ const AdministrativeJobApply = () => {
       department: "Administration",
       type: "Full-time",
       location: "Miami, FL",
-      salary: "$48,000 - $62,000",
+      salary: "$24,000 - $28,000",
       experience: "2-4 years",
       description:
         "Provide comprehensive administrative support, manage office supplies, coordinate travel arrangements, and assist with special projects.",
@@ -238,7 +232,7 @@ const AdministrativeJobApply = () => {
       department: "Customer Success",
       type: "Full-time",
       location: "Denver, CO",
-      salary: "$52,000 - $68,000",
+      salary: "$15,000 - $22,000",
       experience: "1-2 years",
       description:
         "Support client relations team with administrative tasks, maintain client databases, schedule meetings, and handle client inquiries.",

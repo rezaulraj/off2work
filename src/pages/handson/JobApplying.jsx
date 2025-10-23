@@ -451,8 +451,13 @@ const JobApplying = () => {
             className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 border border-blue-100 overflow-hidden transform hover:-translate-y-2 relative flex flex-col"
           >
             {/* Destination Country Flag & Name - Top Section */}
-            <div className="bg-gradient-to-r from-emerald-500 to-green-600 p-4 text-white">
+            <div className="bg-gradient-to-r from-blue-700 via-blue-600 to-cyan-500 p-4 text-white">
               <div className="flex items-center justify-center gap-3">
+                <div className="text-center">
+                  <h3 className="text-lg font-bold text-white">
+                    Job Demand in {job.destinationCountry}
+                  </h3>
+                </div>
                 <ReactCountryFlag
                   countryCode={countryCodeMap[job.destinationCountry]}
                   svg
@@ -464,11 +469,6 @@ const JobApplying = () => {
                   }}
                   title={job.destinationCountry}
                 />
-                <div className="text-center">
-                  <h3 className="text-lg font-bold text-white">
-                    Destination: {job.destinationCountry}
-                  </h3>
-                </div>
               </div>
             </div>
 
@@ -492,7 +492,7 @@ const JobApplying = () => {
               <div className="mb-4">
                 <h4 className="font-semibold text-gray-900 mb-3 flex items-center text-sm uppercase tracking-wide">
                   <FaGlobe className="w-4 h-4 mr-2 text-blue-500" />
-                  Employee Nationality
+                  Origin of Candidates
                 </h4>
                 <div className="flex flex-wrap gap-2">
                   {job.employeeNationality.map((nationality, index) => (

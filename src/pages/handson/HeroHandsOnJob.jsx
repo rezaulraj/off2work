@@ -45,7 +45,7 @@ const HeroHandsOnJob = () => {
               className="group px-8 py-4 border-2 border-blue-700/30 hover:border-blue-700/50 text-white font-semibold rounded-xl transition-all duration-300 transform hover:scale-105 backdrop-blur-md bg-blue-700 hover:bg-blue-800 min-w-[200px] cursor-pointer"
             >
               <span className="flex items-center justify-center">
-                Upload Resume
+                View Jobs
                 <svg
                   className="w-5 h-5 ml-2 transform group-hover:translate-y-1 transition-transform duration-300"
                   fill="none"

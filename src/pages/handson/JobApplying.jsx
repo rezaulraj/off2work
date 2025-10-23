@@ -6,11 +6,14 @@ import {
   FaTelegram,
   FaWhatsapp,
   FaUserFriends,
-  FaMapMarkerAlt,
   FaGlobe,
-  FaVenusMars,
+  FaBriefcase,
+  FaClock,
+  FaMoneyBillWave,
 } from "react-icons/fa";
 import { FaX } from "react-icons/fa6";
+import ReactCountryFlag from "react-country-flag";
+import { PiGenderFemaleBold } from "react-icons/pi";
 
 const JobApplying = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -30,13 +33,27 @@ const JobApplying = () => {
   const [activeShareDropdown, setActiveShareDropdown] = useState(null);
   const fileInputRef = useRef(null);
 
+  // Country code mapping for react-country-flag
+  const countryCodeMap = {
+    Romania: "RO",
+    Poland: "PL",
+    Germany: "DE",
+    Malta: "MT",
+    Cyprus: "CY",
+    Greece: "GR",
+    Italy: "IT",
+    Spain: "ES",
+    Hungary: "HU",
+    Portugal: "PT",
+    "Czech Republic": "CZ",
+  };
+
   const jobs = [
     {
       id: 1,
       title: "Construction Laborer",
       department: "Construction",
       type: "Full-time",
-      location: "Chicago, IL",
       salary: "$18 - $25/hour",
       experience: "0-2 years",
       description:
@@ -51,19 +68,16 @@ const JobApplying = () => {
       urgency: "Urgent",
       shift: "Day Shift",
       vacancies: 8,
-      // New fields for employee details
       employeeNationality: ["Nepal", "Sri Lanka", "Bangladesh"],
-      destinationCountry: ["Romania", "Poland", "Germany"],
-      gender: "Male & Female",
+      destinationCountry: "Romania",
+      gender: "Male",
       contractDuration: "12 months",
-      accommodation: "Provided",
     },
     {
       id: 2,
       title: "Warehouse Associate",
       department: "Logistics",
       type: "Full-time",
-      location: "Dallas, TX",
       salary: "$16 - $22/hour",
       experience: "Entry Level",
       description:
@@ -79,17 +93,15 @@ const JobApplying = () => {
       shift: "Various Shifts",
       vacancies: 12,
       employeeNationality: ["India", "Pakistan", "Philippines"],
-      destinationCountry: ["Malta", "Cyprus", "Greece"],
-      gender: "Male & Female",
+      destinationCountry: "Malta",
+      gender: "Male",
       contractDuration: "24 months",
-      accommodation: "Assistance Provided",
     },
     {
       id: 3,
       title: "Landscape Laborer",
       department: "Landscaping",
       type: "Seasonal",
-      location: "Phoenix, AZ",
       salary: "$15 - $20/hour",
       experience: "Entry Level",
       description:
@@ -105,17 +117,15 @@ const JobApplying = () => {
       shift: "Day Shift",
       vacancies: 5,
       employeeNationality: ["Nepal", "Sri Lanka"],
-      destinationCountry: ["Italy", "Spain"],
+      destinationCountry: "Spain",
       gender: "Male",
       contractDuration: "6 months",
-      accommodation: "Not Provided",
     },
     {
       id: 4,
       title: "General Laborer",
       department: "Manufacturing",
       type: "Temp-to-Hire",
-      location: "Detroit, MI",
       salary: "$17 - $23/hour",
       experience: "0-1 year",
       description:
@@ -131,17 +141,15 @@ const JobApplying = () => {
       shift: "Night Shift",
       vacancies: 6,
       employeeNationality: ["Bangladesh", "India"],
-      destinationCountry: ["Romania", "Hungary"],
-      gender: "Male & Female",
+      destinationCountry: "Hungary",
+      gender: "Male",
       contractDuration: "18 months",
-      accommodation: "Provided",
     },
     {
       id: 5,
       title: "Mover / Helper",
       department: "Moving Services",
       type: "Part-time",
-      location: "Denver, CO",
       salary: "$15 - $19/hour + Tips",
       experience: "Entry Level",
       description:
@@ -157,17 +165,15 @@ const JobApplying = () => {
       shift: "Flexible",
       vacancies: 4,
       employeeNationality: ["Philippines", "Sri Lanka"],
-      destinationCountry: ["Malta", "Portugal"],
+      destinationCountry: "Portugal",
       gender: "Male",
       contractDuration: "12 months",
-      accommodation: "Assistance Provided",
     },
     {
       id: 6,
       title: "Production Assistant",
       department: "Manufacturing",
       type: "Full-time",
-      location: "Atlanta, GA",
       salary: "$16 - $21/hour",
       experience: "0-2 years",
       description:
@@ -183,10 +189,9 @@ const JobApplying = () => {
       shift: "Day Shift",
       vacancies: 10,
       employeeNationality: ["Nepal", "India", "Bangladesh"],
-      destinationCountry: ["Poland", "Czech Republic"],
+      destinationCountry: "Poland",
       gender: "Female",
       contractDuration: "24 months",
-      accommodation: "Provided",
     },
   ];
 
@@ -199,9 +204,9 @@ const JobApplying = () => {
       shareUrl: (job) =>
         `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
           window.location.href
-        )}&quote=Check out this job opening: ${job.title} at ${
-          job.location
-        } - ${job.salary} - ${job.vacancies} positions available`,
+        )}&quote=Check out this job opening: ${job.title} in ${
+          job.destinationCountry
+        } - ${job.salary}`,
     },
     {
       name: "LinkedIn",
@@ -212,7 +217,7 @@ const JobApplying = () => {
         `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
           window.location.href
         )}&summary=${encodeURIComponent(
-          `${job.title} - ${job.department} - ${job.location} - ${job.salary} - ${job.vacancies} vacancies`
+          `${job.title} - ${job.department} - ${job.destinationCountry} - ${job.salary}`
         )}`,
     },
     {
@@ -222,7 +227,7 @@ const JobApplying = () => {
       iconColor: "text-sky-500",
       shareUrl: (job) =>
         `https://twitter.com/intent/tweet?text=${encodeURIComponent(
-          `Check out this job: ${job.title} at ${job.location} - ${job.salary} (${job.vacancies} positions)`
+          `Check out this job: ${job.title} in ${job.destinationCountry} - ${job.salary}`
         )}&url=${encodeURIComponent(window.location.href)}`,
     },
     {
@@ -232,7 +237,7 @@ const JobApplying = () => {
       iconColor: "text-green-600",
       shareUrl: (job) =>
         `https://wa.me/?text=${encodeURIComponent(
-          `Check out this job opening: ${job.title} - ${job.location}. ${job.salary}. ${job.vacancies} positions available. Apply now: ${window.location.href}`
+          `Check out this job opening: ${job.title} - ${job.destinationCountry}. ${job.salary}. Apply now: ${window.location.href}`
         )}`,
     },
     {
@@ -244,7 +249,7 @@ const JobApplying = () => {
         `https://t.me/share/url?url=${encodeURIComponent(
           window.location.href
         )}&text=${encodeURIComponent(
-          `Job Opportunity: ${job.title} - ${job.location} (${job.vacancies} vacancies)`
+          `Job Opportunity: ${job.title} - ${job.destinationCountry}`
         )}`,
     },
     {
@@ -256,7 +261,7 @@ const JobApplying = () => {
         `mailto:?subject=${encodeURIComponent(
           `Job Opportunity: ${job.title}`
         )}&body=${encodeURIComponent(
-          `Check out this job opening:\n\nPosition: ${job.title}\nLocation: ${job.location}\nType: ${job.type}\nSalary: ${job.salary}\nDepartment: ${job.department}\nVacancies: ${job.vacancies}\n\nApply here: ${window.location.href}`
+          `Check out this job opening:\n\nPosition: ${job.title}\nDestination: ${job.destinationCountry}\nType: ${job.type}\nSalary: ${job.salary}\nDepartment: ${job.department}\n\nApply here: ${window.location.href}`
         )}`,
     },
   ];
@@ -393,19 +398,6 @@ const JobApplying = () => {
     return "text-green-600 bg-green-50 border-green-200";
   };
 
-  const getGenderColor = (gender) => {
-    switch (gender.toLowerCase()) {
-      case "male":
-        return "bg-blue-100 text-blue-800 border-blue-200";
-      case "female":
-        return "bg-pink-100 text-pink-800 border-pink-200";
-      case "male & female":
-        return "bg-purple-100 text-purple-800 border-purple-200";
-      default:
-        return "bg-gray-100 text-gray-800 border-gray-200";
-    }
-  };
-
   const formatFileSize = (bytes) => {
     if (bytes === 0) return "0 Bytes";
     const k = 1024;
@@ -420,7 +412,6 @@ const JobApplying = () => {
         setActiveShareDropdown(null);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
@@ -437,8 +428,7 @@ const JobApplying = () => {
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
             Immediate openings for hardworking individuals from various
-            countries. Start your international career today with competitive
-            pay and benefits.
+            countries. Start your international career today.
           </p>
         </div>
         <div className="flex flex-wrap justify-center gap-4 mt-6">
@@ -446,10 +436,10 @@ const JobApplying = () => {
             🌍 International Placement
           </span>
           <span className="bg-green-500 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-            🏠 Accommodation Support
+            💼 Multiple Positions
           </span>
           <span className="bg-purple-500 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-            📄 Visa Assistance
+            ⚡ Quick Hiring
           </span>
         </div>
       </div>
@@ -460,174 +450,123 @@ const JobApplying = () => {
             key={job.id}
             className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 border border-blue-100 overflow-hidden transform hover:-translate-y-2 relative flex flex-col"
           >
-            <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-6 text-white">
-              <div className="flex justify-between items-start mb-3">
-                <div className="flex-1">
-                  <h3 className="text-xl font-bold mb-2 group-hover:text-blue-100 transition-colors">
-                    {job.title}
+            {/* Destination Country Flag & Name - Top Section */}
+            <div className="bg-gradient-to-r from-emerald-500 to-green-600 p-4 text-white">
+              <div className="flex items-center justify-center gap-3">
+                <ReactCountryFlag
+                  countryCode={countryCodeMap[job.destinationCountry]}
+                  svg
+                  style={{
+                    width: "32px",
+                    height: "24px",
+                    borderRadius: "4px",
+                    boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
+                  }}
+                  title={job.destinationCountry}
+                />
+                <div className="text-center">
+                  <h3 className="text-lg font-bold text-white">
+                    Destination: {job.destinationCountry}
                   </h3>
-                  <div className="flex flex-wrap gap-2 mb-3">
-                    <span className="bg-white bg-opacity-20 text-gray-800 backdrop-blur-sm px-3 py-1 rounded-full text-sm">
-                      {job.department}
-                    </span>
-                    <span className="bg-white text-gray-800 bg-opacity-20 backdrop-blur-sm px-3 py-1 rounded-full text-sm">
-                      {job.type}
-                    </span>
-                    <span
-                      className={`px-3 py-1 rounded-full text-xs font-semibold backdrop-blur-sm ${getUrgencyColor(
-                        job.urgency
-                      )}`}
-                    >
-                      {job.urgency}
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="space-y-2 text-sm text-blue-100">
-                <div className="flex items-center">
-                  <FaMapMarkerAlt className="w-4 h-4 mr-2" />
-                  {job.location}
-                </div>
-                <div className="flex items-center">
-                  <svg
-                    className="w-4 h-4 mr-2"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z" />
-                    <path
-                      fillRule="evenodd"
-                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  {job.salary}
-                </div>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center">
-                    <svg
-                      className="w-4 h-4 mr-2"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                    {job.shift}
-                  </div>
-                  <span
-                    className={`px-2 py-1 rounded-full text-xs font-semibold ${getVacancyColor(
-                      job.vacancies
-                    )}`}
-                  >
-                    <FaUserFriends className="inline w-3 h-3 mr-1" />
-                    {job.vacancies}{" "}
-                    {job.vacancies === 1 ? "Vacancy" : "Vacancies"}
-                  </span>
                 </div>
               </div>
             </div>
 
+            {/* Job Title Section */}
+            <div className="p-4 flex items-center justify-between bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-blue-100">
+              <h3 className="text-xl max-w-[60%] drop-shadow-2xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
+                {job.title}
+              </h3>
+              <span
+                className={`px-2 py-1 rounded-full text-lg drop-shadow-2xl flex items-center font-semibold ${getVacancyColor(
+                  job.vacancies
+                )}`}
+              >
+                <FaUserFriends className="inline w-4 h-4 mr-1" />
+                {job.vacancies} {job.vacancies === 1 ? "Vacancy" : "Vacancies"}
+              </span>
+            </div>
+
             <div className="p-6 flex-1">
-              <p className="text-gray-600 mb-4 text-sm leading-relaxed">
-                {job.description}
-              </p>
-
-              {/* Employee Details Section - Highlighted */}
-              <div className="mb-4 p-4 bg-gradient-to-r from-orange-50 to-amber-50 rounded-xl border border-orange-200">
-                <h4 className="font-semibold text-gray-900 mb-3 flex items-center text-orange-800">
-                  <FaGlobe className="w-4 h-4 mr-2" />
-                  International Placement Details
+              {/* Employee Nationality Section */}
+              <div className="mb-4">
+                <h4 className="font-semibold text-gray-900 mb-3 flex items-center text-sm uppercase tracking-wide">
+                  <FaGlobe className="w-4 h-4 mr-2 text-blue-500" />
+                  Employee Nationality
                 </h4>
-
-                {/* Nationality */}
-                <div className="mb-3">
-                  <div className="flex items-center text-sm font-medium text-gray-700 mb-2">
-                    <span className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs mr-2">
-                      Nationality
-                    </span>
-                    Employee Nationality
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {job.employeeNationality.map((nationality, index) => (
-                      <span
-                        key={index}
-                        className="bg-blue-500 text-white px-3 py-1 rounded-full text-xs font-semibold shadow-sm"
-                      >
-                        {nationality}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Destination Country */}
-                <div className="mb-3">
-                  <div className="flex items-center text-sm font-medium text-gray-700 mb-2">
-                    <span className="bg-green-100 text-green-700 px-2 py-1 rounded text-xs mr-2">
-                      Destination
-                    </span>
-                    Work Location
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {job.destinationCountry.map((country, index) => (
-                      <span
-                        key={index}
-                        className="bg-green-500 text-white px-3 py-1 rounded-full text-xs font-semibold shadow-sm"
-                      >
-                        {country}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Gender and Other Details */}
-                <div className="grid grid-cols-2 gap-3 text-sm">
-                  <div>
-                    <div className="flex items-center text-gray-700 mb-1">
-                      <FaVenusMars className="w-3 h-3 mr-1 text-purple-500" />
-                      <span className="font-medium">Gender:</span>
-                    </div>
+                <div className="flex flex-wrap gap-2">
+                  {job.employeeNationality.map((nationality, index) => (
                     <span
-                      className={`px-2 py-1 rounded-full text-xs font-semibold border ${getGenderColor(
-                        job.gender
-                      )}`}
+                      key={index}
+                      className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-3 py-1 rounded-full text-xs font-semibold shadow-sm hover:shadow-md transition-shadow"
                     >
-                      {job.gender}
+                      {nationality}
                     </span>
-                  </div>
-                  <div>
-                    <div className="text-gray-700 mb-1">
-                      <span className="font-medium">Contract:</span>
-                    </div>
-                    <span className="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs font-medium">
-                      {job.contractDuration}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Accommodation */}
-                <div className="mt-3">
-                  <div className="text-gray-700 text-sm">
-                    <span className="font-medium">Accommodation:</span>{" "}
-                    <span
-                      className={
-                        job.accommodation === "Provided"
-                          ? "text-green-600 font-semibold"
-                          : "text-orange-600"
-                      }
-                    >
-                      {job.accommodation}
-                    </span>
-                  </div>
+                  ))}
+                  <span
+                    className={`px-3 py-1 rounded-full text-xs font-semibold ${getUrgencyColor(
+                      job.urgency
+                    )}`}
+                  >
+                    {job.urgency}
+                  </span>
                 </div>
               </div>
 
+              {/* Job Description */}
+              <p className="text-gray-600 mb-4 text-sm leading-relaxed border-l-4 border-blue-200 pl-3">
+                {job.description}
+              </p>
+
+              {/* Job Details Grid */}
+              <div className="grid grid-cols-2 gap-3 mb-4">
+                <div className="flex items-center text-sm text-gray-700">
+                  <FaBriefcase className="w-3 h-3 mr-2 text-blue-500" />
+                  <span className="font-semibold mr-1">Dept:</span>
+                  <span className="text-gray-600">{job.department}</span>
+                </div>
+                <div className="flex items-center text-sm text-gray-700">
+                  <FaClock className="w-3 h-3 mr-2 text-green-500" />
+                  <span className="font-semibold mr-1">Type:</span>
+                  <span className="text-gray-600">{job.type}</span>
+                </div>
+                <div className="flex items-center text-sm text-gray-700">
+                  <svg
+                    className="w-3 h-3 mr-2 text-purple-500"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  <span className="font-semibold mr-1">Shift:</span>
+                  <span className="text-gray-600">{job.shift}</span>
+                </div>
+                <div className="flex items-center text-sm text-gray-700">
+                  <PiGenderFemaleBold className="w-3 h-3 mr-2" />
+
+                  <span className="font-semibold mr-1">Gender:</span>
+                  <span className="text-gray-600">{job.gender}</span>
+                </div>
+              </div>
+
+              {/* Salary and Urgency */}
+              <div className="flex justify-between items-center mb-4 p-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg">
+                <div className="flex items-center text-sm">
+                  <FaMoneyBillWave className="w-3 h-3 mr-1 text-green-500" />
+                  <span className="font-semibold text-gray-700">Salary:</span>
+                  <span className="text-green-600 font-bold ml-1">
+                    {job.salary}
+                  </span>
+                </div>
+              </div>
+
+              {/* Requirements Section */}
               <div className="mb-4">
-                <h4 className="font-semibold text-gray-900 mb-3 flex items-center">
+                <h4 className="font-semibold text-gray-900 mb-3 flex items-center text-sm">
                   <svg
                     className="w-4 h-4 mr-2 text-blue-500"
                     fill="currentColor"
@@ -645,7 +584,7 @@ const JobApplying = () => {
                   {job.requirements.map((req, index) => (
                     <span
                       key={index}
-                      className="bg-gradient-to-r from-gray-50 to-gray-100 text-gray-700 px-3 py-2 rounded-lg text-sm font-medium border border-gray-200"
+                      className="bg-gradient-to-r from-gray-50 to-gray-100 text-gray-700 px-3 py-2 rounded-lg text-sm font-medium border border-gray-200 hover:border-blue-200 transition-colors"
                     >
                       {req}
                     </span>
@@ -657,27 +596,26 @@ const JobApplying = () => {
             {/* Bottom Section with Apply, Share, and Posted Date */}
             <div className="px-6 pb-6 pt-4 border-t border-gray-100 bg-gray-50 rounded-b-2xl">
               <div className="flex items-center justify-between">
-                {/* Posted Date */}
-                <div className="flex items-center text-gray-500">
-                  <svg
-                    className="w-4 h-4 mr-1 text-gray-400"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                  <span className="text-sm font-medium">{job.posted}</span>
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center text-gray-500">
+                    <svg
+                      className="w-4 h-4 mr-1 text-gray-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                    <span className="text-sm font-medium">{job.posted}</span>
+                  </div>
                 </div>
 
-                {/* Action Buttons */}
                 <div className="flex items-center gap-3">
-                  {/* Share Button */}
                   <div className="share-dropdown relative">
                     <button
                       onClick={() => toggleShareDropdown(job.id)}
@@ -730,7 +668,6 @@ const JobApplying = () => {
                               </div>
                             </div>
                           </button>
-
                           <div className="grid grid-cols-2 gap-2">
                             {socialMediaPlatforms.map((platform) => (
                               <button
@@ -756,7 +693,6 @@ const JobApplying = () => {
                     )}
                   </div>
 
-                  {/* Apply Button */}
                   <button
                     onClick={() => openPopup(job)}
                     className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-6 py-2 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl cursor-pointer text-sm"
@@ -795,7 +731,7 @@ const JobApplying = () => {
                 <p className="text-gray-600 mb-6 text-lg">
                   Thank you for applying to the{" "}
                   <strong className="text-blue-600">{selectedJob.title}</strong>{" "}
-                  position.
+                  position in {selectedJob.destinationCountry}.
                 </p>
                 <p className="text-gray-500 mb-8">
                   We've received your application and will contact you within
@@ -816,10 +752,27 @@ const JobApplying = () => {
                       Apply for {selectedJob.title}
                     </h3>
                     <div className="flex items-center gap-4 text-gray-600 flex-wrap">
-                      <p className="flex items-center">
-                        <FaMapMarkerAlt className="w-4 h-4 mr-2 text-blue-500" />
-                        {selectedJob.department} • {selectedJob.location}
-                      </p>
+                      <div className="flex items-center">
+                        <ReactCountryFlag
+                          countryCode={
+                            countryCodeMap[selectedJob.destinationCountry]
+                          }
+                          svg
+                          style={{
+                            width: "20px",
+                            height: "15px",
+                            marginRight: "8px",
+                          }}
+                          title={selectedJob.destinationCountry}
+                        />
+                        <span className="font-semibold">
+                          {selectedJob.destinationCountry}
+                        </span>
+                      </div>
+                      <span className="text-gray-500">•</span>
+                      <span className="text-gray-600">
+                        {selectedJob.department}
+                      </span>
                       <span
                         className={`px-2 py-1 rounded-full text-xs font-semibold ${getVacancyColor(
                           selectedJob.vacancies
@@ -842,8 +795,8 @@ const JobApplying = () => {
                 </div>
 
                 {/* International Placement Details in Popup */}
-                <div className="mb-6 p-4 bg-gradient-to-r from-orange-50 to-amber-50 rounded-xl border border-orange-200">
-                  <h4 className="font-semibold text-gray-900 mb-3 flex items-center text-orange-800">
+                <div className="mb-6 p-4 bg-gradient-to-r from-emerald-50 to-green-50 rounded-xl border border-emerald-200">
+                  <h4 className="font-semibold text-gray-900 mb-3 flex items-center text-emerald-800">
                     <FaGlobe className="w-4 h-4 mr-2" />
                     International Placement Details
                   </h4>
@@ -869,35 +822,33 @@ const JobApplying = () => {
                       <span className="font-medium text-gray-700">
                         Destination:
                       </span>
-                      <div className="flex flex-wrap gap-1 mt-1">
-                        {selectedJob.destinationCountry.map(
-                          (country, index) => (
-                            <span
-                              key={index}
-                              className="bg-green-500 text-white px-2 py-1 rounded text-xs"
-                            >
-                              {country}
-                            </span>
-                          )
-                        )}
+                      <div className="flex items-center gap-2 mt-1">
+                        <ReactCountryFlag
+                          countryCode={
+                            countryCodeMap[selectedJob.destinationCountry]
+                          }
+                          svg
+                          style={{
+                            width: "20px",
+                            height: "15px",
+                          }}
+                          title={selectedJob.destinationCountry}
+                        />
+                        <span className="text-gray-600 font-medium">
+                          {selectedJob.destinationCountry}
+                        </span>
                       </div>
                     </div>
                     <div>
                       <span className="font-medium text-gray-700">Gender:</span>
-                      <span
-                        className={`ml-2 px-2 py-1 rounded text-xs ${getGenderColor(
-                          selectedJob.gender
-                        )}`}
-                      >
+                      <span className="ml-2 text-gray-600">
                         {selectedJob.gender}
                       </span>
                     </div>
                     <div>
-                      <span className="font-medium text-gray-700">
-                        Contract:
-                      </span>
+                      <span className="font-medium text-gray-700">Shift:</span>
                       <span className="ml-2 text-gray-600">
-                        {selectedJob.contractDuration}
+                        {selectedJob.shift}
                       </span>
                     </div>
                   </div>

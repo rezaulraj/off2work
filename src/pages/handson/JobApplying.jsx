@@ -46,6 +46,30 @@ const JobApplying = () => {
     Hungary: "HU",
     Portugal: "PT",
     "Czech Republic": "CZ",
+
+    // Additional countries
+    Armenia: "AM",
+    Australia: "AU",
+    Austria: "AT",
+    Bulgaria: "BG",
+    Canada: "CA",
+    Croatia: "HR",
+    Denmark: "DK",
+    Finland: "FI",
+    France: "FR",
+    Georgia: "GE",
+    Ireland: "IE",
+    Kyrgyzstan: "KG",
+    Lithuania: "LT",
+    Macedonia: "MK", // (ISO code for North Macedonia)
+    Moldova: "MD",
+    Netherlands: "NL",
+    "New Zealand": "NZ",
+    Serbia: "RS",
+    "South Cyprus": "CY", // Uses same code as Cyprus
+    "South Korea": "KR",
+    Ukraine: "UA",
+    UK: "GB",
   };
 
   const jobs = [
@@ -141,7 +165,7 @@ const JobApplying = () => {
       shift: "Night Shift",
       vacancies: 6,
       employeeNationality: ["Bangladesh", "India"],
-      destinationCountry: "Hungary",
+      destinationCountry: "Croatia",
       gender: "Male",
       contractDuration: "18 months",
     },

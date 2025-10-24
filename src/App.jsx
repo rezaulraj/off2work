@@ -35,11 +35,9 @@ function App() {
   const [showScrollButton, setShowScrollButton] = useState(false);
   const [showHiringPopup, setShowHiringPopup] = useState(false);
 
-  // Check if popup was already shown in session storage
   useEffect(() => {
     const popupShown = sessionStorage.getItem("hiringPopupShown");
     if (!popupShown) {
-      // Show popup after 2 seconds delay
       const timer = setTimeout(() => {
         setShowHiringPopup(true);
       }, 2000);
@@ -48,7 +46,6 @@ function App() {
   }, []);
 
   const handleRedirectToCareer = () => {
-    // Mark popup as shown in session storage
     sessionStorage.setItem("hiringPopupShown", "true");
     sessionStorage.setItem("popupAction", "redirected");
     sessionStorage.setItem("popupTimestamp", new Date().toISOString());
@@ -58,7 +55,6 @@ function App() {
   };
 
   const handleCancelPopup = () => {
-    // Mark popup as shown in session storage
     sessionStorage.setItem("hiringPopupShown", "true");
     sessionStorage.setItem("popupAction", "cancelled");
     sessionStorage.setItem("popupTimestamp", new Date().toISOString());
@@ -125,7 +121,6 @@ function App() {
 
   return (
     <>
-      {/* Hiring Popup Modal */}
       {showHiringPopup && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-[100]">
           <motion.div
@@ -134,7 +129,6 @@ function App() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.3 }}
           >
-            {/* Popup Header with Image */}
             <div className="relative">
               <img
                 src={hiaringPopupImage}
@@ -148,7 +142,6 @@ function App() {
               </div>
             </div>
 
-            {/* Popup Content */}
             <div className="p-6">
               <div className="text-center mb-6">
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">
@@ -160,8 +153,6 @@ function App() {
                   for growth!
                 </p>
               </div>
-
-              {/* Stats */}
               <div className="grid grid-cols-3 gap-4 mb-6">
                 <div className="text-center">
                   <div className="text-2xl font-bold text-blue-600">6+</div>
@@ -177,7 +168,6 @@ function App() {
                 </div>
               </div>
 
-              {/* Action Buttons */}
               <div className="flex flex-col sm:flex-row gap-3">
                 <button
                   onClick={handleRedirectToCareer}
@@ -206,7 +196,6 @@ function App() {
                 </button>
               </div>
 
-              {/* Additional Info */}
               <div className="mt-4 text-center">
                 <p className="text-xs text-gray-500">
                   Immediate openings available • Weekly pay • Training provided
@@ -229,7 +218,7 @@ function App() {
           <Route path="/areas-of-work" element={<AeraOfWork />} />
           <Route path="/client-success-stories" element={<Referemces />} />
           <Route path="/about-us" element={<AboutUpPage />} />
-          <Route path="/carrer" element={<Carrer />} />
+          <Route path="/career" element={<Carrer />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/hands-on-jobs" element={<HandOnJob />} />
           <Route path="/administrative-jobs" element={<AdministrativeJob />} />

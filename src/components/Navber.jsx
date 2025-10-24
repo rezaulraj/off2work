@@ -71,16 +71,16 @@ const Navbar = () => {
           href: "/services/trustedworkforce",
           icon: <Users className="h-4 w-4" />,
         },
-        {
-          title: "Carrer",
-          href: "/carrer",
-          icon: <PiMicrophoneStageLight className="h-4 w-4" />,
-        },
       ],
     },
     { title: t("menu.areas"), href: "/areas-of-work" },
     { title: t("menu.success"), href: "/client-success-stories" },
     { title: t("menu.about"), href: "/about-us" },
+    {
+      title: "Careers",
+      href: "/career",
+      // icon: <PiMicrophoneStageLight className="h-4 w-4" />,
+    },
   ];
 
   const currentPath = location.pathname;

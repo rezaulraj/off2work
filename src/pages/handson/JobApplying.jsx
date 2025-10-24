@@ -395,7 +395,7 @@ const JobApplying = () => {
   const getVacancyColor = (vacancies) => {
     if (vacancies <= 3) return "text-red-600 bg-red-50 border-red-200";
     if (vacancies <= 6) return "text-orange-600 bg-orange-50 border-orange-200";
-    return "text-green-600 bg-green-50 border-green-200";
+    return "text-blue-700 bg-green-50 border-green-200";
   };
 
   const formatFileSize = (bytes) => {
@@ -451,7 +451,7 @@ const JobApplying = () => {
             className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 border border-blue-100 overflow-hidden transform hover:-translate-y-2 relative flex flex-col"
           >
             {/* Destination Country Flag & Name - Top Section */}
-            <div className="bg-gradient-to-r from-blue-700 via-blue-600 to-cyan-500 p-4 text-white">
+            <div className="bg-gradient-to-r from-blue-700 via-blue-600 to-blue-700 p-4 text-white">
               <div className="flex items-center justify-center gap-3">
                 <div className="text-center">
                   <h3 className="text-lg font-bold text-white">

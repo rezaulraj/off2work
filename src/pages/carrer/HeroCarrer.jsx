@@ -53,10 +53,10 @@ const HeroCarrer = () => {
 
         <div className="flex flex-col sm:flex-row gap-4 mb-12 justify-center items-center">
           <Link
-            to="/administrative-jobs"
+            to="/hands-on-jobs"
             className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center cursor-pointer"
           >
-            <span>Administrative & Management Jobs</span>
+            <span>Hands-on Jobs</span>
             <svg
               className="w-5 h-5 ml-2"
               fill="none"
@@ -73,10 +73,10 @@ const HeroCarrer = () => {
           </Link>
 
           <Link
-            to="/hands-on-jobs"
+            to="/administrative-jobs"
             className="px-8 py-4 bg-white/10 backdrop-blur-sm text-white font-semibold rounded-lg border border-white/20 hover:bg-white/20 transition-all duration-300 flex items-center justify-center"
           >
-            <span>Hands-on Jobs</span>
+            <span>Administrative & Management Jobs</span>
             <svg
               className="w-5 h-5 ml-2"
               fill="none"

@@ -15,7 +15,6 @@
       content="Off2Work, recruitment, recruitment agency, international jobs, blue collar jobs, hospitality recruitment, healthcare jobs, construction jobs, agriculture, crop farming, and livestock farming, wood processing, manufacturing plants, shipbuilding industry, tourism, food processing industry, catering job placement, production, work abroad, Europe recruitment, International Recruitment Agency"
     />
     <meta name="author" content="Off2Work Recruitment Agency" />
-
     <meta property="og:title" content="Off2Work" />
     <meta
       property="og:description"
@@ -36,39 +35,6 @@
 
   <body>
     <div id="root"></div>
-
-    <div id="google_translate_element" style="display: none"></div>
     <script type="module" src="/src/main.jsx"></script>
-
-    <script type="text/javascript">
-      function googleTranslateElementInit() {
-        new google.translate.TranslateElement(
-          {
-            pageLanguage: "en",
-            includedLanguages:
-              "af,ar,az,be,bg,bn,bs,ca,ceb,cs,cy,da,de,el,en,es,et,eu,fa,fi,fr,ga,gl,gu,ha,hi,hmn,hr,ht,hu,hy,id,ig,is,it,iw,ja,jv,ka,kk,km,kn,ko,ku,ky,lo,lt,lv,mk,ml,mn,mr,ms,mt,my,ne,nl,no,pa,pl,ps,pt,ro,ru,si,sk,sl,sq,sr,sv,sw,ta,te,th,tr,uk,ur,uz,vi,zh-CN,zh-TW,zu",
-            autoDisplay: false,
-          },
-          "google_translate_element"
-        );
-
-        const userLang = navigator.language || navigator.userLanguage;
-        if (!userLang.startsWith("en")) {
-          const langCode = userLang.split("-")[0];
-          const interval = setInterval(() => {
-            const combo = document.querySelector(".goog-te-combo");
-            if (combo) {
-              combo.value = langCode;
-              combo.dispatchEvent(new Event("change"));
-              clearInterval(interval);
-            }
-          }, 300);
-        }
-      }
-    </script>
-    <script
-      type="text/javascript"
-      src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
-    ></script>
   </body>
 </html>

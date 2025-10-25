@@ -20,6 +20,7 @@ import Carrer from "./pages/carrer/Carrer";
 import HandOnJob from "./pages/handson/HandOnJob";
 import AdministrativeJob from "./pages/AdministrativeJob/AdministrativeJob";
 import axios from "axios";
+import GoogleTranslate from "./components/GoogleTranslate";
 
 NProgress.configure({
   minimum: 0.3,
@@ -140,6 +141,7 @@ function App() {
 
   return (
     <>
+      <GoogleTranslate />
       {showHiringPopup && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-[100]">
           <motion.div

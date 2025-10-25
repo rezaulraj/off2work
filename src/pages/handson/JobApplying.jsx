@@ -482,12 +482,10 @@ const JobApplying = () => {
                 </div>
               </div>
 
-              
               <p className="text-gray-600 mb-4 text-sm leading-relaxed border-l-4 border-blue-200 pl-3">
                 {job.description}
               </p>
 
-              
               <div className="grid grid-cols-2 gap-3 mb-4">
                 <div className="flex items-center text-sm text-gray-700">
                   <FaBriefcase className="w-3 h-3 mr-2 text-blue-500" />
@@ -522,7 +520,6 @@ const JobApplying = () => {
                 </div>
               </div>
 
-              
               <div className="flex justify-between items-center mb-4 p-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg">
                 <div className="flex items-center text-sm">
                   <FaMoneyBillWave className="w-3 h-3 mr-1 text-green-500" />
@@ -533,7 +530,6 @@ const JobApplying = () => {
                 </div>
               </div>
 
-              
               <div className="mb-4">
                 <h4 className="font-semibold text-gray-900 mb-3 flex items-center text-sm">
                   <svg

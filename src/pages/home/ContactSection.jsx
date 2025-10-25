@@ -149,7 +149,6 @@ const ContactSection = () => {
             </div>
           </motion.div>
 
-          {/* Right Column - Contact Form */}
           <motion.div
             variants={fadeIn("left", "tween", 0.2, 1)}
             className="bg-gradient-to-br md:flex flex-col items-center justify-center from-[#652D90]/90 to-[#3E4048]/90 backdrop-blur-sm rounded-2xl p-8 shadow-xl text-white border border-white/10"

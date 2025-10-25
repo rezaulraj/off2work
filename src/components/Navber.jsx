@@ -78,7 +78,7 @@ const Navbar = () => {
     { title: t("menu.about"), href: "/about-us" },
     {
       title: "Careers",
-      href: "/career",
+      href: "/careers",
       // icon: <PiMicrophoneStageLight className="h-4 w-4" />,
     },
   ];

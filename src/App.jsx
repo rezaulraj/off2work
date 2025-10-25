@@ -70,7 +70,7 @@ function App() {
     sessionStorage.setItem("popupTimestamp", new Date().toISOString());
 
     setShowHiringPopup(false);
-    navigate("/hands-on-jobs");
+    navigate("/careers");
   };
 
   const handleCancelPopup = () => {
@@ -241,7 +241,7 @@ function App() {
           <Route path="/areas-of-work" element={<AeraOfWork />} />
           <Route path="/client-success-stories" element={<Referemces />} />
           <Route path="/about-us" element={<AboutUpPage />} />
-          <Route path="/career" element={<Carrer />} />
+          <Route path="/careers" element={<Carrer />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/hands-on-jobs" element={<HandOnJob />} />
           <Route path="/administrative-jobs" element={<AdministrativeJob />} />

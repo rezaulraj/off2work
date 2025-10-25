@@ -37,7 +37,6 @@ const JobApplying = () => {
   const [error, setError] = useState(null);
   const fileInputRef = useRef(null);
 
-  // Country code mapping for react-country-flag
   const countryCodeMap = {
     Romania: "RO",
     Poland: "PL",
@@ -74,7 +73,6 @@ const JobApplying = () => {
     UK: "GB",
   };
 
-  // Fetch jobs from API
   useEffect(() => {
     const fetchJobs = async () => {
       try {
@@ -83,11 +81,10 @@ const JobApplying = () => {
           "https://script.google.com/macros/s/AKfycbxSihU_-lx49-gr1h4oe6w1H621Nxy2QHfMEx87gGGQKzfvwyQ3V3TMOxx9ypsR_JFdow/exec?site=Off2Work"
         );
 
-        // const handsOnJobs = response.data.filter(job =>
-        //   job.JobCategory === "HandsOn_Jobs"
-        // );
-        // Transform API data to match our component structure
-        const transformedJobs = response.data.map((job, index) => ({
+        const handsOnJobs = response.data.filter(
+          (job) => job.JobCategory === "HandsOn_Jobs"
+        );
+        const transformedJobs = handsOnJobs.map((job, index) => ({
           id: job.SL_No || index + 1,
           title: job.Title,
           department: job.Industry,
@@ -107,7 +104,7 @@ const JobApplying = () => {
             : ["Open to All"],
           destinationCountry: job.Country,
           gender: job.Gender,
-          contractDuration: "12 months", // Default value since API doesn't provide this
+          contractDuration: "12 months",
           jobCategory: job.JobCategory,
           status: job.Status,
         }));
@@ -425,7 +422,6 @@ const JobApplying = () => {
             key={job.id}
             className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 border border-blue-100 overflow-hidden transform hover:-translate-y-2 relative flex flex-col"
           >
-            {/* Destination Country Flag & Name - Top Section */}
             <div className="bg-gradient-to-r from-blue-700 via-blue-600 to-blue-700 p-4 text-white">
               <div className="flex items-center justify-center gap-3">
                 <div className="text-center">
@@ -447,7 +443,6 @@ const JobApplying = () => {
               </div>
             </div>
 
-            {/* Job Title Section */}
             <div className="p-4 flex items-center justify-between bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-blue-100">
               <h3 className="text-xl max-w-[60%] drop-shadow-2xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
                 {job.title}
@@ -463,7 +458,6 @@ const JobApplying = () => {
             </div>
 
             <div className="p-6 flex-1">
-              {/* Employee Nationality Section */}
               <div className="mb-4">
                 <h4 className="font-semibold text-gray-900 mb-3 flex items-center text-sm uppercase tracking-wide">
                   <FaGlobe className="w-4 h-4 mr-2 text-blue-500" />
@@ -488,12 +482,12 @@ const JobApplying = () => {
                 </div>
               </div>
 
-              {/* Job Description */}
+              
               <p className="text-gray-600 mb-4 text-sm leading-relaxed border-l-4 border-blue-200 pl-3">
                 {job.description}
               </p>
 
-              {/* Job Details Grid */}
+              
               <div className="grid grid-cols-2 gap-3 mb-4">
                 <div className="flex items-center text-sm text-gray-700">
                   <FaBriefcase className="w-3 h-3 mr-2 text-blue-500" />
@@ -528,7 +522,7 @@ const JobApplying = () => {
                 </div>
               </div>
 
-              {/* Salary and Urgency */}
+              
               <div className="flex justify-between items-center mb-4 p-3 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg">
                 <div className="flex items-center text-sm">
                   <FaMoneyBillWave className="w-3 h-3 mr-1 text-green-500" />
@@ -539,7 +533,7 @@ const JobApplying = () => {
                 </div>
               </div>
 
-              {/* Requirements Section */}
+              
               <div className="mb-4">
                 <h4 className="font-semibold text-gray-900 mb-3 flex items-center text-sm">
                   <svg
@@ -568,7 +562,6 @@ const JobApplying = () => {
               </div>
             </div>
 
-            {/* Bottom Section with Apply, Share, and Posted Date */}
             <div className="px-6 pb-6 pt-4 border-t border-gray-100 bg-gray-50 rounded-b-2xl">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
@@ -681,7 +674,6 @@ const JobApplying = () => {
         ))}
       </div>
 
-      {/* Rest of the popup modal code remains the same */}
       {isPopupOpen && selectedJob && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-fade-in">
           <div className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto transform animate-scale-in">
@@ -769,7 +761,6 @@ const JobApplying = () => {
                   </button>
                 </div>
 
-                {/* International Placement Details in Popup */}
                 <div className="mb-6 p-4 bg-gradient-to-r from-emerald-50 to-green-50 rounded-xl border border-emerald-200">
                   <h4 className="font-semibold text-gray-900 mb-3 flex items-center text-emerald-800">
                     <FaGlobe className="w-4 h-4 mr-2" />

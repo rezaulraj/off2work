@@ -1,8 +1,25 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect } from "react";
+import { useState } from "react";
 import { MdArrowCircleDown } from "react-icons/md";
 import { Link } from "react-router-dom";
 
 const HeroHandsOnJob = () => {
+  const [activeJobsCount, setActiveJobsCount] = useState(0);
+
+  const fetchJobs = async () => {
+    const response = await axios.get(
+      "https://script.google.com/macros/s/AKfycbxSihU_-lx49-gr1h4oe6w1H621Nxy2QHfMEx87gGGQKzfvwyQ3V3TMOxx9ypsR_JFdow/exec?site=Off2Work"
+    );
+    const data = response.data;
+    const activeJobs = data.filter((job) => job.Status === "Active");
+    setActiveJobsCount(activeJobs.length);
+  };
+
+  useEffect(() => {
+    fetchJobs();
+  }, []);
+
   return (
     <div className="relative min-h-screen bg-gray-900 overflow-hidden py-20">
       <div
@@ -76,7 +93,9 @@ const HeroHandsOnJob = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-2xl mx-auto">
             <div className="text-center p-4 rounded-xl backdrop-blur-sm bg-white/5 border border-white/10">
-              <div className="text-2xl font-bold text-white mb-1">14+</div>
+              <div className="text-2xl font-bold text-white mb-1">
+                {activeJobsCount}+
+              </div>
               <div className="text-gray-300 text-sm">Active Jobs</div>
             </div>
             <div className="text-center p-4 rounded-xl backdrop-blur-sm bg-white/5 border border-white/10">

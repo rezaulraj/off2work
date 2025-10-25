@@ -1,7 +1,23 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 const HeroCarrer = () => {
+  const [activeJobsCount, setActiveJobsCount] = useState(0);
+  const [locationsCount, setLocationsCount] = useState(0);
+  const fetchJobs = async () => {
+    const response = await axios.get(
+      "https://script.google.com/macros/s/AKfycbxSihU_-lx49-gr1h4oe6w1H621Nxy2QHfMEx87gGGQKzfvwyQ3V3TMOxx9ypsR_JFdow/exec?site=Off2Work"
+    );
+    const data = response.data;
+    const activeJobs = data.filter((job) => job.Status === "Active");
+    setActiveJobsCount(activeJobs.length);
+    const uniqueCountries = [...new Set(data.map((job) => job.Country))];
+    setLocationsCount(uniqueCountries.length);
+  };
+  useEffect(() => {
+    fetchJobs();
+  }, []);
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900 flex items-center justify-center py-20">
       <div
@@ -38,11 +54,15 @@ const HeroCarrer = () => {
 
         <div className="flex flex-wrap justify-center gap-8 mb-12">
           <div className="text-center">
-            <div className="text-3xl font-bold text-white mb-1">14+</div>
+            <div className="text-3xl font-bold text-white mb-1">
+              {activeJobsCount}+
+            </div>
             <div className="text-gray-300 text-sm">Open Positions</div>
           </div>
           <div className="text-center">
-            <div className="text-3xl font-bold text-white mb-1">15+</div>
+            <div className="text-3xl font-bold text-white mb-1">
+              {locationsCount}+
+            </div>
             <div className="text-gray-300 text-sm">Countries</div>
           </div>
           <div className="text-center">

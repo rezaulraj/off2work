@@ -1,8 +1,40 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { MdArrowCircleDown } from "react-icons/md";
 import { Link } from "react-router-dom";
 
 const HeroAdministrativeJob = () => {
+  const [activeJobsCount, setActiveJobsCount] = useState(0);
+  const [totalVacancies, setTotalVacancies] = useState(0);
+  const [locationsCount, setLocationsCount] = useState(0);
+
+  const fetchJobs = async () => {
+    const response = await axios.get(
+      "https://script.google.com/macros/s/AKfycbxSihU_-lx49-gr1h4oe6w1H621Nxy2QHfMEx87gGGQKzfvwyQ3V3TMOxx9ypsR_JFdow/exec?site=Off2Work"
+    );
+    const data = response.data;
+    const administrativeJobs = data.filter(
+      (job) =>
+        job.JobCategory === "Administrative_Jobs" && job.Status === "Active"
+    );
+
+    setActiveJobsCount(administrativeJobs.length);
+    const vacancies = administrativeJobs.reduce(
+      (total, job) => total + (job.Vacancies || 0),
+      0
+    );
+    setTotalVacancies(vacancies);
+
+    const uniqueCountries = [
+      ...new Set(administrativeJobs.map((job) => job.Country)),
+    ];
+    setLocationsCount(uniqueCountries.length);
+  };
+
+  useEffect(() => {
+    fetchJobs();
+  }, []);
+
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 overflow-hidden py-20">
       <div
@@ -13,13 +45,6 @@ const HeroAdministrativeJob = () => {
         }}
       >
         <div className="absolute inset-0 bg-gradient-to-r from-slate-900/90 via-purple-900/70 to-slate-900/90 backdrop-blur-[1px]"></div>
-      </div>
-
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-1/4 left-1/4 w-4 h-4 bg-white/30 rounded-full animate-pulse"></div>
-        <div className="absolute top-3/4 right-1/4 w-3 h-3 bg-blue-400/40 rounded-full animate-bounce delay-300"></div>
-        <div className="absolute bottom-1/3 left-1/3 w-2 h-2 bg-purple-400/50 rounded-full animate-pulse delay-700"></div>
-        <div className="absolute top-1/2 right-1/3 w-3 h-3 bg-emerald-400/40 rounded-full animate-ping delay-1000"></div>
       </div>
 
       <div className="relative z-20 min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8">
@@ -43,8 +68,8 @@ const HeroAdministrativeJob = () => {
           </div>
 
           <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
-            Executive {""}
-            <span className=" text-transparent bg-clip-text bg-gradient-to-r from-blue-200 via-purple-200 to-pink-200 my-4">
+            Executive{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-200 via-purple-200 to-pink-200 my-4">
               Administrative
             </span>{" "}
             Excellence
@@ -56,7 +81,32 @@ const HeroAdministrativeJob = () => {
             mastery and executive support expertise.
           </p>
 
-          <div className="flex flex-wrap justify-center gap-6 max-w-2xl mx-auto mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-2xl mx-auto mb-12">
+            <div className="text-center p-6 rounded-2xl backdrop-blur-sm bg-white/5 border border-white/10 transform hover:scale-105 transition-all duration-300">
+              <div className="text-3xl font-bold text-white mb-2">
+                {activeJobsCount}
+              </div>
+              <div className="text-gray-300 text-sm font-medium">
+                Available Positions
+              </div>
+            </div>
+            <div className="text-center p-6 rounded-2xl backdrop-blur-sm bg-white/5 border border-white/10 transform hover:scale-105 transition-all duration-300">
+              <div className="text-3xl font-bold text-white mb-2">
+                {totalVacancies}+
+              </div>
+              <div className="text-gray-300 text-sm font-medium">
+                Total Vacancies
+              </div>
+            </div>
+            <div className="text-center p-6 rounded-2xl backdrop-blur-sm bg-white/5 border border-white/10 transform hover:scale-105 transition-all duration-300">
+              <div className="text-3xl font-bold text-white mb-2">
+                {locationsCount}+
+              </div>
+              <div className="text-gray-300 text-sm font-medium">Countries</div>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap justify-center gap-4 max-w-2xl mx-auto mb-8">
             {[
               "Executive Assistant Roles",
               "Office Management",

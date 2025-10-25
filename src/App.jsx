@@ -19,6 +19,7 @@ import ThankYouPage from "./components/ThankYouPage";
 import Carrer from "./pages/carrer/Carrer";
 import HandOnJob from "./pages/handson/HandOnJob";
 import AdministrativeJob from "./pages/AdministrativeJob/AdministrativeJob";
+import axios from "axios";
 
 NProgress.configure({
   minimum: 0.3,
@@ -34,6 +35,25 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [showScrollButton, setShowScrollButton] = useState(false);
   const [showHiringPopup, setShowHiringPopup] = useState(false);
+
+  const [jobData, setJobData] = useState([]);
+  const [activeJobsCount, setActiveJobsCount] = useState(0);
+  const [locationsCount, setLocationsCount] = useState(0);
+  const fetchJobs = async () => {
+    const response = await axios.get(
+      "https://script.google.com/macros/s/AKfycbxSihU_-lx49-gr1h4oe6w1H621Nxy2QHfMEx87gGGQKzfvwyQ3V3TMOxx9ypsR_JFdow/exec?site=Off2Work"
+    );
+    const data = response.data;
+    setJobData(data);
+    const activeJobs = data.filter((job) => job.Status === "Active");
+    setActiveJobsCount(activeJobs.length);
+    const uniqueCountries = [...new Set(data.map((job) => job.Country))];
+    setLocationsCount(uniqueCountries.length);
+  };
+
+  useEffect(() => {
+    fetchJobs();
+  }, []);
 
   useEffect(() => {
     const popupShown = sessionStorage.getItem("hiringPopupShown");
@@ -155,11 +175,15 @@ function App() {
               </div>
               <div className="grid grid-cols-3 gap-4 mb-6">
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-blue-600">6+</div>
+                  <div className="text-2xl font-bold text-blue-600">
+                    {activeJobsCount}+
+                  </div>
                   <div className="text-xs text-gray-500">Open Positions</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-green-600">15+</div>
+                  <div className="text-2xl font-bold text-green-600">
+                    {locationsCount}+
+                  </div>
                   <div className="text-xs text-gray-500">Locations</div>
                 </div>
                 <div className="text-center">

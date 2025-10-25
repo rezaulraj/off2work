@@ -36,7 +36,6 @@ function App() {
   const [showScrollButton, setShowScrollButton] = useState(false);
   const [showHiringPopup, setShowHiringPopup] = useState(false);
 
-  const [jobData, setJobData] = useState([]);
   const [activeJobsCount, setActiveJobsCount] = useState(0);
   const [locationsCount, setLocationsCount] = useState(0);
   const fetchJobs = async () => {
@@ -44,7 +43,7 @@ function App() {
       "https://script.google.com/macros/s/AKfycbxSihU_-lx49-gr1h4oe6w1H621Nxy2QHfMEx87gGGQKzfvwyQ3V3TMOxx9ypsR_JFdow/exec?site=Off2Work"
     );
     const data = response.data;
-    setJobData(data);
+
     const activeJobs = data.filter((job) => job.Status === "Active");
     setActiveJobsCount(activeJobs.length);
     const uniqueCountries = [...new Set(data.map((job) => job.Country))];
@@ -71,7 +70,7 @@ function App() {
     sessionStorage.setItem("popupTimestamp", new Date().toISOString());
 
     setShowHiringPopup(false);
-    navigate("/carrer");
+    navigate("/hands-on-jobs");
   };
 
   const handleCancelPopup = () => {

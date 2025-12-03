@@ -44,8 +44,14 @@ const ContactInfo = () => {
         "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d335853.17511073046!2d21.395943937411328!3d41.9515666694422!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x13541595f05fe855%3A0x10bd292c79fe4898!2z0JHQuNC30L3QuNGBLdGG0LXQvdGC0LDRgCDQodC40L3QtdGA0LPQuNGY0LA!5e1!3m2!1sen!2sbd!4v1759242254428!5m2!1sen!2sbd",
       hours: "8:00 AM – 4:00 PM",
     },
+    {
+      title: "Bulgaria",
+      address: "NPZ Iskar, 11B Bruksel Blvd., 1360 Sofia, Bulgaria",
+      mapUrl:
+        "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1722718.7684845135!2d22.295394598251878!3d42.86123540599578!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40aa8611df795555%3A0xaeabed911588d7f0!2sNPZ%20Iskar%2C%20bul.%20%22Bruksel%22%2011B%2C%201360%2C%201528%20Sofia%2C%20Bulgaria!5e1!3m2!1sen!2sbd!4v1764767458123!5m2!1sen!2sbd",
+      hours: "8:00 AM – 4:00 PM",
+    },
   ];
-
   return (
     <div className="max-w-[1280px] mx-auto px-4 py-12 md:py-20">
       <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-12">

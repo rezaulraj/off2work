@@ -172,7 +172,12 @@ const Footer = () => {
                 country: "North Macedonia",
                 address:
                   "'Novoproektirana' bb, 1000, Vladimir Komarov 11a, Skopje 1000, North Macedonia",
-                phone: "+385 91 7831 699",
+                phone: "",
+              },
+              {
+                country: "Bulgaria",
+                address: "NPZ Iskar, 11B Bruksel Blvd., 1360 Sofia, Bulgaria",
+                phone: "",
               },
             ].map((office, index) => (
               <div key={index} className="mb-4">

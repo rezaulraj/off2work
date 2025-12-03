@@ -79,6 +79,11 @@ const ContactSection = () => {
                       address:
                         "'Novoproektirana' bb, 1000, Vladimir Komarov 11a, Skopje 1000, North Macedonia",
                     },
+                    {
+                      title: "Bulgaria",
+                      address:
+                        "NPZ Iskar, 11B Bruksel Blvd., 1360 Sofia, Bulgaria",
+                    },
                   ].map((location, index) => (
                     <motion.div
                       key={index}

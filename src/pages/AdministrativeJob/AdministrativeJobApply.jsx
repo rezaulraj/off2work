@@ -32,6 +32,10 @@ const AdministrativeJobApply = () => {
   const [loading, setLoading] = useState(true);
   const fileInputRef = useRef(null);
 
+  const FORMSUBMIT_URL =
+    "https://formsubmit.co/ajax/d2fafb7ddeae73c2f45e67a4d9e54b71";
+  const REDIRECT_URL = "https://off2.work/thank-you";
+
   // Fetch jobs from API
   const fetchJobs = async () => {
     try {
@@ -40,13 +44,11 @@ const AdministrativeJobApply = () => {
       );
       const data = response.data;
 
-      // Filter only administrative jobs with Active status
       const administrativeJobs = data.filter(
         (job) =>
           job.JobCategory === "Administrative_Jobs" && job.Status === "Active"
       );
 
-      // Transform API data to match component structure
       const transformedJobs = administrativeJobs.map((job, index) => ({
         id: job.SL_No || index + 1,
         title: job.Title,
@@ -77,7 +79,6 @@ const AdministrativeJobApply = () => {
     }
   };
 
-  
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const now = new Date();
@@ -265,18 +266,92 @@ const AdministrativeJobApply = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    for (let i = 0; i <= 100; i += 20) {
-      setUploadProgress(i);
-      await new Promise((resolve) => setTimeout(resolve, 200));
+    const formDataToSend = new FormData();
+
+    formDataToSend.append("name", formData.name);
+    formDataToSend.append("email", formData.email);
+    formDataToSend.append("phone", formData.phone);
+    formDataToSend.append("experience", formData.experience);
+    formDataToSend.append("availability", formData.availability);
+    formDataToSend.append("coverLetter", formData.coverLetter);
+    formDataToSend.append("message", formData.message);
+
+    formDataToSend.append("job_title", selectedJob.title);
+    formDataToSend.append("job_location", selectedJob.location);
+    formDataToSend.append("job_department", selectedJob.department);
+    formDataToSend.append("job_salary", selectedJob.salary);
+    formDataToSend.append("job_type", selectedJob.type);
+    formDataToSend.append("job_vacancies", selectedJob.vacancies);
+    formDataToSend.append("job_experience", selectedJob.experience);
+    formDataToSend.append("job_shift", selectedJob.shift);
+    formDataToSend.append("job_gender", selectedJob.gender);
+    formDataToSend.append("job_urgency", selectedJob.urgency);
+
+    if (formData.resume) {
+      formDataToSend.append("resume", formData.resume);
     }
 
-    console.log("Application submitted:", { job: selectedJob, ...formData });
-    setIsSubmitted(true);
-    setIsSubmitting(false);
+    formDataToSend.append(
+      "_subject",
+      `Administrative Job Application: ${selectedJob.title} - ${formData.name}`
+    );
+    formDataToSend.append("_captcha", "false");
+    formDataToSend.append("_template", "table");
+    formDataToSend.append(
+      "_autoresponse",
+      `Thank you for applying for the ${selectedJob.title} administrative position at ${selectedJob.location}! We will review your application and contact you within 2-3 business days.`
+    );
+    formDataToSend.append("_next", REDIRECT_URL);
 
-    setTimeout(() => {
-      closePopup();
-    }, 3000);
+    try {
+      for (let i = 0; i <= 100; i += 20) {
+        setUploadProgress(i);
+        await new Promise((resolve) => setTimeout(resolve, 200));
+      }
+
+      const response = await fetch(FORMSUBMIT_URL, {
+        method: "POST",
+        body: formDataToSend,
+        headers: {
+          Accept: "application/json",
+        },
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        console.log("Application submitted successfully:", {
+          job: selectedJob,
+          ...formData,
+        });
+        setIsSubmitted(true);
+
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          experience: "",
+          resume: null,
+          availability: "Immediate",
+          coverLetter: "",
+          message: "",
+        });
+
+        if (fileInputRef.current) {
+          fileInputRef.current.value = "";
+        }
+      } else {
+        throw new Error("Form submission failed");
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      alert(
+        "There was an error submitting your application. Please try again."
+      );
+    } finally {
+      setIsSubmitting(false);
+      setUploadProgress(0);
+    }
   };
 
   const getUrgencyColor = (urgency) => {
@@ -476,7 +551,6 @@ const AdministrativeJobApply = () => {
                   </div>
                 </div>
 
-                {/* Additional job details */}
                 <div className="grid grid-cols-2 gap-4 text-sm text-gray-600">
                   <div className="flex items-center">
                     <svg
@@ -513,10 +587,8 @@ const AdministrativeJobApply = () => {
                 </div>
               </div>
 
-              {/* Bottom Section with Apply, Share, and Posted Date */}
               <div className="px-6 pb-6 pt-4 border-t border-gray-100 bg-gray-50 rounded-b-2xl">
                 <div className="flex items-center justify-between">
-                  {/* Posted Date */}
                   <div className="flex items-center text-gray-500">
                     <svg
                       className="w-4 h-4 mr-1 text-gray-400"
@@ -533,10 +605,7 @@ const AdministrativeJobApply = () => {
                     </svg>
                     <span className="text-sm font-medium">{job.posted}</span>
                   </div>
-
-                  {/* Action Buttons */}
                   <div className="flex items-center gap-3">
-                    {/* Share Button */}
                     <div className="share-dropdown relative">
                       <button
                         onClick={() => toggleShareDropdown(job.id)}
@@ -629,7 +698,6 @@ const AdministrativeJobApply = () => {
         </div>
       )}
 
-      {/* Rest of the component remains the same */}
       {isPopupOpen && selectedJob && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-fade-in">
           <div className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto transform animate-scale-in">
@@ -656,11 +724,14 @@ const AdministrativeJobApply = () => {
                   <strong className="text-purple-600">
                     {selectedJob.title}
                   </strong>{" "}
-                  position.
+                  position at {selectedJob.location}.
                 </p>
                 <p className="text-gray-500 mb-8">
                   We've received your application and will contact you within
                   2-3 business days.
+                </p>
+                <p className="text-sm text-gray-400 mb-4">
+                  You will be redirected to the thank you page shortly...
                 </p>
                 <button
                   onClick={closePopup}
@@ -670,7 +741,21 @@ const AdministrativeJobApply = () => {
                 </button>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="p-8">
+              <form onSubmit={handleSubmit} method="POST" className="p-8">
+                <input type="hidden" name="_captcha" value="false" />
+                <input type="hidden" name="_next" value={REDIRECT_URL} />
+                <input
+                  type="hidden"
+                  name="_subject"
+                  value={`Administrative Job Application: ${selectedJob.title}`}
+                />
+                <input type="hidden" name="_template" value="table" />
+                <input
+                  type="hidden"
+                  name="_autoresponse"
+                  value={`Thank you for applying for the ${selectedJob.title} administrative position at ${selectedJob.location}! We will review your application and contact you within 2-3 business days.`}
+                />
+
                 <div className="flex justify-between items-start mb-8">
                   <div>
                     <h3 className="text-2xl font-bold text-gray-900 mb-2">

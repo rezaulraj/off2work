@@ -37,6 +37,10 @@ const JobApplying = () => {
   const [error, setError] = useState(null);
   const fileInputRef = useRef(null);
 
+  const FORMSUBMIT_URL =
+    "https://formsubmit.co/ajax/d2fafb7ddeae73c2f45e67a4d9e54b71";
+  const REDIRECT_URL = "https://off2.work/thank-you";
+
   const countryCodeMap = {
     Romania: "RO",
     Poland: "PL",
@@ -292,18 +296,89 @@ const JobApplying = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    for (let i = 0; i <= 100; i += 20) {
-      setUploadProgress(i);
-      await new Promise((resolve) => setTimeout(resolve, 200));
+    const formDataToSend = new FormData();
+
+    formDataToSend.append("name", formData.name);
+    formDataToSend.append("email", formData.email);
+    formDataToSend.append("phone", formData.phone);
+    formDataToSend.append("experience", formData.experience);
+    formDataToSend.append("availability", formData.availability);
+    formDataToSend.append("message", formData.message);
+
+    formDataToSend.append("job_title", selectedJob.title);
+    formDataToSend.append("job_country", selectedJob.destinationCountry);
+    formDataToSend.append("job_department", selectedJob.department);
+    formDataToSend.append("job_salary", selectedJob.salary);
+    formDataToSend.append("job_type", selectedJob.type);
+    formDataToSend.append("job_vacancies", selectedJob.vacancies);
+    formDataToSend.append("job_experience", selectedJob.experience);
+    formDataToSend.append("job_shift", selectedJob.shift);
+    formDataToSend.append("job_gender", selectedJob.gender);
+
+    if (formData.resume) {
+      formDataToSend.append("resume", formData.resume);
     }
 
-    console.log("Application submitted:", { job: selectedJob, ...formData });
-    setIsSubmitted(true);
-    setIsSubmitting(false);
+    formDataToSend.append(
+      "_subject",
+      `New Application: ${selectedJob.title} - ${formData.name}`
+    );
+    formDataToSend.append("_captcha", "false");
+    formDataToSend.append("_template", "table");
+    formDataToSend.append(
+      "_autoresponse",
+      `Thank you for applying for the ${selectedJob.title} position in ${selectedJob.destinationCountry}! We will review your application and contact you within 2-3 business days.`
+    );
+    formDataToSend.append("_next", REDIRECT_URL);
 
-    setTimeout(() => {
-      closePopup();
-    }, 3000);
+    try {
+      for (let i = 0; i <= 100; i += 20) {
+        setUploadProgress(i);
+        await new Promise((resolve) => setTimeout(resolve, 200));
+      }
+
+      const response = await fetch(FORMSUBMIT_URL, {
+        method: "POST",
+        body: formDataToSend,
+        headers: {
+          Accept: "application/json",
+        },
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        console.log("Application submitted successfully:", {
+          job: selectedJob,
+          ...formData,
+        });
+        setIsSubmitted(true);
+
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          experience: "",
+          resume: null,
+          availability: "Immediate",
+          message: "",
+        });
+
+        if (fileInputRef.current) {
+          fileInputRef.current.value = "";
+        }
+      } else {
+        throw new Error("Form submission failed");
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      alert(
+        "There was an error submitting your application. Please try again."
+      );
+    } finally {
+      setIsSubmitting(false);
+      setUploadProgress(0);
+    }
   };
 
   const getUrgencyColor = (urgency) => {
@@ -514,7 +589,6 @@ const JobApplying = () => {
                 </div>
                 <div className="flex items-center text-sm text-gray-700">
                   <PiGenderFemaleBold className="w-3 h-3 mr-2" />
-
                   <span className="font-semibold mr-1">Gender:</span>
                   <span className="text-gray-600">{job.gender}</span>
                 </div>
@@ -700,6 +774,9 @@ const JobApplying = () => {
                   We've received your application and will contact you within
                   2-3 business days.
                 </p>
+                <p className="text-sm text-gray-400 mb-4">
+                  You will be redirected to the thank you page shortly...
+                </p>
                 <button
                   onClick={closePopup}
                   className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105"
@@ -708,7 +785,21 @@ const JobApplying = () => {
                 </button>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="p-8">
+              <form onSubmit={handleSubmit} method="POST" className="p-8">
+                <input type="hidden" name="_captcha" value="false" />
+                <input type="hidden" name="_next" value={REDIRECT_URL} />
+                <input
+                  type="hidden"
+                  name="_subject"
+                  value={`New Application: ${selectedJob.title}`}
+                />
+                <input type="hidden" name="_template" value="table" />
+                <input
+                  type="hidden"
+                  name="_autoresponse"
+                  value={`Thank you for applying for the ${selectedJob.title} position in ${selectedJob.destinationCountry}! We will review your application and contact you within 2-3 business days.`}
+                />
+
                 <div className="flex justify-between items-start mb-8">
                   <div>
                     <h3 className="text-2xl font-bold text-gray-900 mb-2">

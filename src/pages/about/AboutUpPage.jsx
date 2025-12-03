@@ -325,6 +325,11 @@ const AboutUpPage = () => {
                   "'Novoproektirana' bb, 1000, Vladimir Komarov 11a, Skopje 1000, North Macedonia",
                 phone: "",
               },
+              {
+                country: "Bulgaria",
+                address: "NPZ Iskar, 11B Bruksel Blvd., 1360 Sofia, Bulgaria",
+                phone: "",
+              },
             ].map((office, index) => (
               <motion.div
                 key={index}
